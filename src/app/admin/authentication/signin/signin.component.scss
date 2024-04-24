@@ -1,0 +1,31 @@
+@import "../../../../grid.scss";
+
+@include generate-columns (12, 12, 6, 6, 6);
+
+.width {
+    width: 80%;
+}
+
+.login-card {
+    margin: auto;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+    p {
+        text-align: left;
+        margin-left: 10%;
+    }
+}
+
+.right-aligned {
+    text-align: left;
+}
+
+.forgot-password {
+    margin-top: 15px;
+
+    a {
+        margin-right: 10px;
+        text-decoration: none;
+    }
+}

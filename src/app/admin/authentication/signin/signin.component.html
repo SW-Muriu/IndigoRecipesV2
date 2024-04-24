@@ -1,1 +1,43 @@
-<p>signin works!</p>
+<div class="login-card">
+    <h1 mat-headline>Login</h1>
+
+
+    <form [formGroup]="signInForm">
+        <!-- Email -->
+        <div>
+            <div>
+                <p>Password</p>
+            </div>
+            <mat-form-field appearance="outline" class="width">
+                <input placeholder="Input Email" matInput formControlName="email" />
+                <mat-error *ngIf="signInForm.get('email')?.hasError('required')">The
+                    Email is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Password -->
+        <div>
+            <div>
+                <p>Password</p>
+            </div>
+            <mat-form-field appearance="outline" class="width">
+                <input placeholder="Input password" matInput formControlName="password" />
+                <mat-error *ngIf="signInForm.get('password')?.hasError('required')">The
+                    Password is required</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+
+
+
+
+
+
+    <button mat-raised-button color="primary" [disabled]="!signInForm.valid" (click)="login()"
+        class="width">Login</button>
+
+    <div class="forgot-password">
+        <a routerLink="/forgot-password">Forgot your password?</a>
+        <a routerLink="/create-account">Create account</a>
+    </div>
+</div>
