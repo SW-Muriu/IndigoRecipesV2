@@ -1,0 +1,123 @@
+$header-size: 12;
+$display-size: 12;
+
+.header {
+    // position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-left {
+        cursor: pointer;
+
+        .logo {
+            max-width: 150px; // Set the maximum width for the logo
+            height: auto; // Maintain aspect ratio
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+    }
+
+    .header-right {
+        button {
+            margin-left: 10px;
+        }
+    }
+}
+
+.bottom-header {
+    display: flex;
+    // justify-content: space-between;
+    width: $header-size * 100% / $display-size; // Calculate the width as a percentage
+    margin: 0 auto; // Center the header horizontally
+    padding: 1rem;
+    background-color: #f5f5f5;
+}
+
+
+.header2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: #f5f5f5;
+    color: #fff;
+
+    .top-section {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+
+        .search-input {
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            color: #333;
+            position: relative;
+            padding-right: 35px;
+        }
+
+        .search-button {
+            padding: 5px 10px;
+            // background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            color: #333;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .search-input button[mat-raised-button] {
+            box-shadow: none;
+        }
+    }
+
+    .menu {
+        margin-top: 10px;
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                display: inline-block;
+                margin-right: 20px;
+
+                a {
+                    text-decoration: none;
+                    color: #fff;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}

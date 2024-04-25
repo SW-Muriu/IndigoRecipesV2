@@ -1,1 +1,30 @@
-<p>header works!</p>
+<section>
+    <header class="header">
+        <div class="header-left" (click)="navigateToHome()">
+            <h1>
+                <!-- <img src="../../../../assets/Indigo Recipesb.png" width="50" height="50" alt=""> -->
+                <strong>Indigo Recipes</strong>
+            </h1>
+        </div>
+        <div class="header-right">
+            <button mat-button (click)="addRecipe()">Add Recipe</button>
+            <button mat-button (click)="updateProfile()">My Profile</button>
+            <button mat-button (click)="onLogout()">Logout</button>
+        </div>
+    </header>
+    <header class="bottom-header">
+    </header>
+
+    <!-- Search Area -->
+    <div  *ngIf="shouldDeferContent">
+        <div>
+            <header class="header2">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search">
+                    <button mat-button>
+                        <i class="fas fa-search"></i>Search </button>
+                </div>
+            </header>
+        </div>
+    </div>
+</section>
