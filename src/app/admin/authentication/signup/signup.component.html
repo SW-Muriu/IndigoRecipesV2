@@ -1,1 +1,85 @@
-<p>signup works!</p>
+<app-header class="main-content"></app-header>
+
+<section class="content-below-header main-content">
+
+    <div class="login-card">
+        <h1 mat-headline>Create Account</h1>
+        <form [formGroup]="signupForm">
+            <!-- Email -->
+
+            <div>
+                <div>
+                    <P>FIRST NAME</P>
+                </div>
+                <mat-form-field appearance="outline" class="width">
+                    <input placeholder="e.g. John" matInput formControlName="firstName" />
+                    <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">The
+                        First Name is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <div>
+                    <P>SECOND NAME</P>
+                </div>
+                <mat-form-field appearance="outline" class="width">
+                    <input placeholder="e.g. Doe" matInput formControlName="secondName" />
+                    <mat-error *ngIf="signupForm.get('secondName')?.hasError('required')">The
+                        Second Name is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <div>
+                    <P>USERNAME</P>
+                </div>
+                <mat-form-field appearance="outline" class="width">
+                    <input placeholder="e.g. Johndoe" matInput formControlName="userName" />
+                    <mat-error *ngIf="signupForm.get('userName')?.hasError('required')">The
+                        User Name is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <div>
+                    <p>EMAIL</p>                   
+                </div>
+                <mat-form-field appearance="outline" class="width">
+                    <input placeholder="e.g. example@mail.com" matInput formControlName="email" />
+                    <mat-error *ngIf="signupForm.get('email')?.hasError('required')">The
+                        Email is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <div>
+                    <p>PASSWORD</p>
+                </div>
+                <mat-form-field appearance="outline" class="width">
+                    <input placeholder="Input password" matInput formControlName="password" type="password"/>
+                    <mat-error *ngIf="signupForm.get('password')?.hasError('required')">The
+                        Password is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <div>
+                    <p>CONFIRM PASSWORD</p>
+                </div>
+                <mat-form-field appearance="outline" class="width">
+                    <input placeholder="Input password" matInput formControlName="confirmPassword" type="confirmPassword" />
+                    <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('required')">The
+                        Password is required</mat-error>
+                </mat-form-field>
+            </div>
+
+        </form>
+        <button mat-raised-button color="primary" [disabled]="signupForm.value.password != signupForm.value.confirmPassword || !signupForm.valid && signupForm.value.password == null"  (click)="onSignUp()"
+            class="width padding">CREATE ACCOUNT</button>
+            <div class="forgot-password">
+                <a color="primary" (click)="onLogIn()">Sign In</a>
+            </div>
+    </div>
+</section>
+<!-- BOTTOM CONTENT -->

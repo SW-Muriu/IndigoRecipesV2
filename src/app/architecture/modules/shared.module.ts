@@ -34,11 +34,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
         MatFormField,
         MatInputModule,
         MatIconButton,
+        // BrowserAnimationsModule,
         // MatFormFieldControl
 
     ],
     exports: [
         // FormsModule,
+        // BrowserModule, 
+        // BrowserAnimationsModule,
         MatFormField,
         MatFormFieldModule,
         MatInputModule,

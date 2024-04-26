@@ -18,7 +18,7 @@ app-header {
 }
 
 .content-below-header {
-    padding-top: 250px;
+    padding-top: 120px;
 }
 
 //Grid system:
@@ -98,4 +98,14 @@ $columns: 12;
     @include make-col(12);
 }
 
-// ... define classes for other column widths (col-3, col-4, etc.)
+//*********************************************************************************
+//Sticky Footer 
+.site-wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+}
