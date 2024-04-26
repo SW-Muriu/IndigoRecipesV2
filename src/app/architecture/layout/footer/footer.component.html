@@ -1,0 +1,29 @@
+<main>
+    <section>
+        <section>
+            <main class="main">
+                <div class="content">
+                    <div class="left-side">
+
+                        <h1>Contact Us</h1>
+                        <br>
+                        <div class="search-container">
+                            <form [formGroup]="mngForm">
+
+                                <textarea class="search-input" placeholder="Search" required></textarea>
+                                <mat-error *ngIf="(mngForm.get('response')?.dirty || mngForm.get('response')?.touched)">
+                                    Response is required
+                                </mat-error>
+                            </form>
+                            <button mat-button-raised class="search-button" (click)="onSendEmail()">
+                                <i class="fas fa-search"></i>Send Email </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <main>
+                © All Rights Reserved | Indigo Recipes | Samsicker 2024
+            </main>
+        </section>
+    </section>
+</main>
