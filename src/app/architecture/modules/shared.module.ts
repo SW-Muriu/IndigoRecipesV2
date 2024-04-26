@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
+import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
@@ -24,6 +24,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 
 @NgModule({
     declarations: [],
@@ -31,6 +33,7 @@ import { MatFormFieldControl } from '@angular/material/form-field';
         CommonModule,
         MatFormField,
         MatInputModule,
+        MatIconButton,
         // MatFormFieldControl
 
     ],
@@ -51,6 +54,10 @@ import { MatFormFieldControl } from '@angular/material/form-field';
         MatPaginatorModule,
         MatSortModule,
         MatDialogModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatButtonModule,
+        MatIconButton,
         // MatTableExporterModule,
         MatProgressSpinnerModule,
         MatCardModule,

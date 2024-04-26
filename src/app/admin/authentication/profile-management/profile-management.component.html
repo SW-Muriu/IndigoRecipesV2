@@ -1,1 +1,97 @@
-<p>profile-management works!</p>
+<app-header></app-header>
+
+<section class="content-below-header">
+    <div class="container">
+
+    <mat-card class="user-menu" [ngStyle]="{ width: '12%', gap: '12px' }">
+        <mat-card-header>
+            <mat-icon class="user-icon">person</mat-icon>
+            <span class="user-name">{{ userName }}</span>
+        </mat-card-header>
+        <mat-list dense>
+            <mat-list-item *ngFor="let item of menuItems" (click)="onMenuItemClick(item)"
+                [ngClass]="{ 'selected-item': item.selected }">
+                <span matLine>{{ item.label }}</span>
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
+
+
+
+        <!-- Internal Card -->
+        <mat-card >
+            <mat-card-header>
+                <mat-card-title><strong>Personal Information</strong></mat-card-title>
+                
+                <mat-card-subtitle>By filling out this information, you will receive a more personalized experience
+                    across all Indigo Recipes websites.</mat-card-subtitle>
+                <br>
+                <br>
+                <mat-card-subtitle>
+                    <!-- <mat-icon>lock</mat-icon> -->
+                    This information is private</mat-card-subtitle>
+
+            </mat-card-header>
+            <hr>
+            <mat-card-content>
+                <form [formGroup]="profileForm">
+                    <div>
+                        <!-- Email -->
+                        <div>
+                            <div>
+                                <p><strong>Email</strong></p>
+                            </div>
+                            <mat-form-field appearance="outline" class="email-field">
+                                <input placeholder="e.g. your@email.com" matInput formControlName="email" />
+                                <mat-error *ngIf="profileForm.get('email')?.hasError('required')">The
+                                    Email is required</mat-error>
+                            </mat-form-field>
+                            <p>*Contact Indigo Recipes to change your email</p>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="row-definition">
+                            <div class="col1">
+                                <div>
+                                    <p><strong>First Name</strong></p>
+                                </div>
+                                <mat-form-field appearance="outline">
+                                    <input placeholder="e.g. John" matInput formControlName="password" />
+                                    <mat-error *ngIf="profileForm.get('password')?.hasError('required')">The
+                                        First is required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col1">
+                                <div>
+                                    <p><strong>Second Name</strong></p>
+                                </div>
+                                <mat-form-field appearance="outline">
+                                    <input placeholder="e.g. Doe" matInput formControlName="password" />
+                                    <mat-error *ngIf="profileForm.get('password')?.hasError('required')">The
+                                        Second is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col1">
+                                <div>
+                                    <p><strong>User Name</strong></p>
+                                </div>
+                                <mat-form-field appearance="outline">
+                                    <input placeholder="e.g. Johndoe" matInput formControlName="password" />
+                                    <mat-error *ngIf="profileForm.get('password')?.hasError('required')">The
+                                        User Name is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary"> SAVE CHANGES</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+</section>

@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../architecture/modules/shared.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HeaderComponent } from '../../../architecture/layout/header/header.component';
+import { ProfileManagementComponent } from '../profile-management/profile-management.component';
 
 @Component({
   selector: 'app-signin',
   standalone: true,
   imports: [
-    SharedModule
+    SharedModule,
+    HeaderComponent, 
+    ProfileManagementComponent,
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss'

@@ -3,17 +3,19 @@
 @include generate-columns (12, 12, 6, 6, 6);
 
 .width {
-    width: 80%;
+    width: 60%;
 }
 
 .login-card {
     margin: auto;
-    width: 80%;
-    padding: 20px;
+    margin-top: 3%;
+    width: 60%;
+    padding: 10px;
     text-align: center;
+
     p {
         text-align: left;
-        margin-left: 10%;
+        margin-left: 20%;
     }
 }
 
@@ -28,4 +30,21 @@
         margin-right: 10px;
         text-decoration: none;
     }
+}
+
+//Styling the bottom content
+.image-organization {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; // Distributes items evenly along the main axis
+    width: 80%; // Covers 80% of the viewport
+
+    .single-image {
+        flex-basis: 48%; // Each image takes up 48% of the container width to leave space for the gap
+        margin-bottom: 2%; // Adds a small gap between images
+    }
+}
+
+.padding {
+    padding: 10px;
 }
