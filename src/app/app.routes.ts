@@ -7,12 +7,15 @@ export const routes: Routes = [
 
     {
         path: "",
-        component: SignupComponent,
+        component: SigninComponent,
         children: [{
             path: '',
             redirectTo: "#", pathMatch: "full"
         }]
     },
 
-    { path: "#", component: SigninComponent }
+    { path: "#", component: SigninComponent },
+    { path: "signup", component: SignupComponent },
+    {path: "profile", component: ProfileManagementComponent}
+    
 ];

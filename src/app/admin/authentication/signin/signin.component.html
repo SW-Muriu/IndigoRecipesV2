@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<section>
+<section class="content-below-header">
     <div class="login-card">
         <h1 mat-headline>Login</h1>
         <form [formGroup]="signInForm">
@@ -32,8 +32,8 @@
             class="width padding">Login</button>
 
         <div class="forgot-password">
-            <a routerLink="/forgot-password" color="primary">Forgot your password?</a>
-            <a routerLink="/create-account" color="primary">Create account</a>
+            <a href="/signup" color="primary">Forgot your password?</a>
+            <a href="/signup" color="primary">Create account</a>
         </div>
     </div>
 

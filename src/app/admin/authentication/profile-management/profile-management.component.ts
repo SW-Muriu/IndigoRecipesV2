@@ -3,6 +3,7 @@ import { SharedModule } from '../../../architecture/modules/shared.module';
 import { HeaderComponent } from '../../../architecture/layout/header/header.component';
 import { MatIconButton } from '@angular/material/button';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FooterComponent } from '../../../architecture/layout/footer/footer.component';
 
 export interface UserMenuItem {
   label: string;
@@ -15,6 +16,7 @@ export interface UserMenuItem {
   imports: [
     SharedModule,
     HeaderComponent, 
+    FooterComponent,
     
   ],
   templateUrl: './profile-management.component.html',

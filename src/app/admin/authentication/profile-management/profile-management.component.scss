@@ -4,6 +4,7 @@
 
 .container {
     gap: 10px;
+    flex-basis: 80%;
     display: flex;
     justify-content: center;
 
@@ -39,7 +40,7 @@ hr {
     flex-direction: row;
     gap: 10px;
 
-    mat-form-field {
+    .span-length {
         width: 100%;
 
     }
@@ -57,9 +58,14 @@ hr {
         .col1 {
             width: 100%;
 
+
         }
 
-        mat-form-field {
+        .email-field {
+            width: 100%;
+        }
+
+        .span-length {
             width: 100%;
         }
     }

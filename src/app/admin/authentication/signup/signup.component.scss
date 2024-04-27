@@ -8,7 +8,7 @@
 
 .login-card {
     margin: auto;
-    margin-top: 3%;
+    // margin-top: 3%;
     width: 60%;
     padding: 10px;
     text-align: center;
@@ -29,5 +29,11 @@
     a {
         margin-right: 10px;
         text-decoration: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .login-card {
+        width: 100%;
     }
 }

@@ -1,4 +1,4 @@
-<app-header class="main-content"></app-header>
+<app-header></app-header>
 
 <section class="content-below-header main-content">
 
@@ -13,8 +13,8 @@
                 </div>
                 <mat-form-field appearance="outline" class="width">
                     <input placeholder="e.g. John" matInput formControlName="firstName" />
-                    <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">The
-                        First Name is required</mat-error>
+                    <mat-error *ngIf="signupForm.get('firstName')?.hasError('required')">
+                        Enter First Name</mat-error>
                 </mat-form-field>
             </div>
 
@@ -24,8 +24,8 @@
                 </div>
                 <mat-form-field appearance="outline" class="width">
                     <input placeholder="e.g. Doe" matInput formControlName="secondName" />
-                    <mat-error *ngIf="signupForm.get('secondName')?.hasError('required')">The
-                        Second Name is required</mat-error>
+                    <mat-error *ngIf="signupForm.get('secondName')?.hasError('required')">
+                        Enter Second Name </mat-error>
                 </mat-form-field>
             </div>
 
@@ -35,8 +35,8 @@
                 </div>
                 <mat-form-field appearance="outline" class="width">
                     <input placeholder="e.g. Johndoe" matInput formControlName="userName" />
-                    <mat-error *ngIf="signupForm.get('userName')?.hasError('required')">The
-                        User Name is required</mat-error>
+                    <mat-error *ngIf="signupForm.get('userName')?.hasError('required')">
+                        Enter Username</mat-error>
                 </mat-form-field>
             </div>
 
@@ -46,8 +46,8 @@
                 </div>
                 <mat-form-field appearance="outline" class="width">
                     <input placeholder="e.g. example@mail.com" matInput formControlName="email" />
-                    <mat-error *ngIf="signupForm.get('email')?.hasError('required')">The
-                        Email is required</mat-error>
+                    <mat-error *ngIf="signupForm.get('email')?.hasError('required')">
+                        Enter Email</mat-error>
                 </mat-form-field>
             </div>
 
@@ -58,8 +58,8 @@
                 </div>
                 <mat-form-field appearance="outline" class="width">
                     <input placeholder="Input password" matInput formControlName="password" type="password"/>
-                    <mat-error *ngIf="signupForm.get('password')?.hasError('required')">The
-                        Password is required</mat-error>
+                    <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
+                        Enter Password</mat-error>
                 </mat-form-field>
             </div>
 
@@ -70,7 +70,7 @@
                 <mat-form-field appearance="outline" class="width">
                     <input placeholder="Input password" matInput formControlName="confirmPassword" type="confirmPassword" />
                     <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('required')">The
-                        Password is required</mat-error>
+                Enter Passoword</mat-error>
                 </mat-form-field>
             </div>
 
@@ -78,8 +78,9 @@
         <button mat-raised-button color="primary" [disabled]="signupForm.value.password != signupForm.value.confirmPassword || !signupForm.valid && signupForm.value.password == null"  (click)="onSignUp()"
             class="width padding">CREATE ACCOUNT</button>
             <div class="forgot-password">
-                <a color="primary" (click)="onLogIn()">Sign In</a>
+                <a href="/#" color="primary">Sign In</a>
             </div>
     </div>
 </section>
+<app-footer></app-footer>
 <!-- BOTTOM CONTENT -->

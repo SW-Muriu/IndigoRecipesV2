@@ -53,7 +53,7 @@ export class HeaderComponent {
   }
 
   updateProfile(): void {
-    let route = '/profile/update';
+    let route = '/profile';
     this.router.navigate([route]);
   }
 

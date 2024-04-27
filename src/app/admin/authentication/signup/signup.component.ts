@@ -3,13 +3,15 @@ import { HeaderComponent } from '../../../architecture/layout/header/header.comp
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../../architecture/modules/shared.module';
+import { FooterComponent } from '../../../architecture/layout/footer/footer.component';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
   imports: [
     SharedModule,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent,
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
