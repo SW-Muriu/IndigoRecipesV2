@@ -1,0 +1,133 @@
+.container {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    flex-wrap: wrap;
+
+
+}
+
+.item {
+    width: 25%;
+    /* Four items per row */
+    min-width: 300px;
+    /* Adjust based on your design */
+    flex-grow: 0, 0, auto;
+    /* Allow items to grow if there's extra space */
+    box-sizing: border-box;
+    /* Ensure padding and border are included in width */
+    padding: 10px;
+    /* Adjust as needed */
+}
+
+/* Adjust layout for smaller screens */
+@media (max-width: 500px) {
+    .item {
+        width: 100%;
+        /* Single item per row */
+    }
+
+    .container {
+        width: 100%;
+    }
+}
+
+mat-card {
+    padding-bottom: 0.5rem;
+}
+
+mat-card-title:hover {
+    text-decoration: underline;
+    text-decoration-color: #292c6b;
+}
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        font-size: 24px;
+        color: #ccc; // Default star color
+        cursor: pointer;
+    }
+
+    .active {
+        color: #292c6b; // Color for active stars
+    }
+}
+
+//Fav Button
+.circle-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    transform: translate(50%, -50%);
+    background-color: #292c6b;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1; // Ensure the button is above the image
+
+    .top-right-button {
+        color: white;
+        position: absolute;
+
+    }
+}
+
+
+//Image Loader
+.image-container {
+    position: relative;
+    /* Allow positioning of the spinner */
+    width: 200px;
+    /* Adjust width as needed */
+    height: 150px;
+    /* Adjust height as needed */
+}
+
+.image-container img {
+    opacity: 0;
+    /* Initially hide the image */
+    transition: opacity 0.5s ease-in-out;
+    /* Smooth transition on load */
+}
+
+.image-container::after {
+    content: "";
+    /* Add a pseudo-element for the spinner */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Center the spinner */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 5px solid #ccc;
+    /* Adjust spinner style */
+    border-top-color: #f00;
+    /* Animate border for spinning effect */
+    animation: spin 1s linear infinite;
+    /* Add spinning animation */
+}
+
+.image-container img.loaded {
+    opacity: 1;
+    /* Show the image once loaded */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

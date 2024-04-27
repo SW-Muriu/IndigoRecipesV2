@@ -57,4 +57,9 @@ export class RecipeService {
     const url = `${this.serverUrl}/delete`;
     return this._http.delete<any>(url, { params: params });
   }
+
+  favoriteRecipe(params: any): Observable<any>{
+    const url = `${this.serverUrl}/favorite`;
+    return this._http.put<any>(url, params);
+  }
 }
