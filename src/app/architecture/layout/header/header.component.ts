@@ -16,7 +16,7 @@ export class HeaderComponent {
   currentUserName!: string | null;
   currentUserEmail!: string | null;
   hideSearch: string | null = this.currentUserName;
-  shouldDeferContent: boolean = true;
+  shouldDeferContent: boolean = false;
 
   constructor(
     private router: Router,
@@ -35,7 +35,7 @@ export class HeaderComponent {
   /**** Adding a recipe */
   addRecipe(): void {
     console.log("Adding Recipe");
-    let route = 'manage/recipe';
+    let route = 'recipe/holder';
     this.router.navigate([route]);
   }
 

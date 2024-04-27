@@ -35,3 +35,8 @@ export interface Recipe {
     tips: string[];
     instructions: string[];
 }
+
+export interface Comment {
+    sender: string;
+    text: string;
+}
