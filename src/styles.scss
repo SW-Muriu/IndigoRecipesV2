@@ -16,7 +16,7 @@ app-header {
 }
 
 .content-below-header {
-    padding-top: 120px;
+    padding-top: 150px;
 }
 
 //Grid system:
@@ -118,4 +118,19 @@ $columns: 12;
         // background-color: pink;
         width: 100%;
     }
+}
+
+//Notifications
+.snackbar-danger {
+    background-color: #f44336; // Red color for danger messages
+    color: #fff; // White text color for better contrast
+    padding: 1rem;
+    /* Adjust padding if needed */
+}
+
+.snackbar-success {
+    background-color: #292c6b; // Green color for success messages
+    color: #fff; // White text color for better contrast
+    padding: 1rem;
+    /* Adjust padding if needed */
 }

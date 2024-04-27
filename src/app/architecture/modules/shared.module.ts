@@ -25,6 +25,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { HttpClientModule } from "@angular/common/http";
+import { BrowserModule } from "@angular/platform-browser";
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
         MatFormField,
         MatInputModule,
         MatIconButton,
+        // BrowserModule
         // BrowserAnimationsModule,
         // MatFormFieldControl
 
@@ -42,6 +45,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
         // FormsModule,
         // BrowserModule, 
         // BrowserAnimationsModule,
+        HttpClientModule,
         MatFormField,
         MatFormFieldModule,
         MatInputModule,
