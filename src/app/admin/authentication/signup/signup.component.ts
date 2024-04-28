@@ -4,6 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../../architecture/modules/shared.module';
 import { FooterComponent } from '../../../architecture/layout/footer/footer.component';
+import { RecipeService } from '../../../recipe-management/services/recipe.service';
+import { NotificationService } from '../../../architecture/services/notification/notification.service';
+import { AuthService } from '../../services/authservices/auth.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -19,10 +23,13 @@ import { FooterComponent } from '../../../architecture/layout/footer/footer.comp
 export class SignupComponent {
 
   signupForm: FormGroup;
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder, 
-    private router: Router
+    private router: Router, 
+    private recipeManService: AuthService,
+    private snackbarManService: NotificationService,
   ) {
     this.signupForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -34,13 +41,40 @@ export class SignupComponent {
     })
   }
 
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
+
   onSignUp(): void {
-
+    this.recipeManService
+      .registerUser(this.signupForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          if (res.statusCode == 200) {
+            const username = res.entity.userName;
+            const email = res.entity.email;
+            sessionStorage.setItem('email', email);
+            sessionStorage.setItem('username', username);
+            let route = '/home';
+            this.router.navigate([route]);
+            this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
+          } else {
+            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
+          }
+        },
+        error: (err) => {
+          this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
+        },
+        complete: () => {
+          // this.fetchAllUsers();
+        }
+      });
   }
 
-  onLogIn(): void {
-    let route = `route`;
-    this.router.navigate([route]);
-  }
+
 
 }
