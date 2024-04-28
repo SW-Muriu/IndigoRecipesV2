@@ -1,0 +1,31 @@
+<app-header></app-header>
+
+<main class="content-below-header"> 
+    <section>
+        <div class="homeband">
+            <div class="content">
+                Embark on a gastronomic journey with us! From the sizzle of breakfast to the savory bites of dinner!
+            </div>
+        </div>
+
+        <div class="row-placement">
+            <div class="responsive-column hover-effect" (click)="selectCuisine('African')">
+                <div>
+                    AFRICAN
+                </div>
+            </div>
+            <div class="responsive-column hover-effect" (click)="selectCuisine('Italian')">
+                <div>
+                    ITALIAN
+                </div>
+            </div>
+            <div class="responsive-column hover-effect" (click)="selectCuisine('Chinese')">
+                <div>
+                    CHINESE
+                </div>
+            </div>
+        
+        </div>
+
+    </section>
+</main>
