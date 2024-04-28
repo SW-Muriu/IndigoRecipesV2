@@ -1,212 +1,72 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { SharedModule } from '../../../architecture/modules/shared.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HeaderComponent } from '../../../architecture/layout/header/header.component';
 import { ProfileManagementComponent } from '../profile-management/profile-management.component';
 import { RecipeHolderComponent } from '../../../recipe-management/recipe-holder/recipe-holder.component';
 import { Recipe } from '../../../architecture/utils/interfaces';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/authservices/auth.service';
+import { HttpParams } from '@angular/common/http';
+import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../architecture/services/notification/notification.service';
 
 @Component({
   selector: 'app-signin',
   standalone: true,
   imports: [
     SharedModule,
-    HeaderComponent, 
+    HeaderComponent,
     ProfileManagementComponent,
     RecipeHolderComponent,
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss'
 })
-export class SigninComponent {
-login() {
-throw new Error('Method not implemented.');
-}
+export class SigninComponent implements OnDestroy {
 
+  destroy$: Subject<boolean> = new Subject<boolean>();
   signInForm: FormGroup
-  signUpFom: FormGroup
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private authManService: AuthService,
+    private snackbarManService: NotificationService,
   ) {
     this.signInForm = this.fb.group({
-      email: ['', [Validators.required]],
+      userNameOrEmail: ['', [Validators.required]],
       password: ['', [Validators.required]]
-    }); 
-
-    this.signUpFom = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.email, Validators.required]],
-      username: ['', [Validators.required],],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]],
-    })
+    });
   }
 
-  recipes: Recipe[] = [
-    {
-    title: 'Ugali Mayai',
-    yield: 4,
-    rating: 4,
-    prepTime: 20,
-    cookTime: 30,
-    totalTime: 50,
-    id: 0,
-    time: "Breakfast",
-    imageUrl: './../../../assets/political.png',
-    // imageUrl: "https://via.placeholder.com/300", 
-    place: "African",
-    ingredients: [
-      "2 boneless, skinless chicken breasts",
-      "1 tablespoon olive oil",
-      "1 teaspoon dried oregano",
-      "1/2 teaspoon garlic powder",
-      "1/4 teaspoon salt",
-      "1/4 teaspoon black pepper",
-      "1 bunch asparagus, trimmed",
-      "1 lemon, sliced",
-    ],
-    instructions: [
-      "Preheat oven to 400°F (200°C). Lightly grease a baking sheet.",
-      "In a bowl, toss chicken breasts with olive oil, oregano, garlic powder, salt, and pepper.",
-      "Arrange chicken breasts on the prepared baking sheet. Scatter asparagus spears around the chicken.",
-      "Top with lemon slices.",
-      "Bake for 25 minutes, or until chicken is cooked through and asparagus is tender-crisp",
-    ],
-    tips: [
-      "For added flavor, marinate the chicken in the olive oil mixture for 30 minutes before baking.",
-      "You can substitute other vegetables for the asparagus, such as broccoli florets or bell peppers.",
-      "Serve with rice or quinoa for a complete meal.",
-    ],
-    comments: [{
-      sender: 'samsicker',
-      text: 'This recipe was delicious! I loved the flavor combinations.'
-    }],
-    owner: 'junior',
-    isFavourited: true,
-    },
-    {
-      title: 'Ugali Mayai',
-      yield: 4,
-      rating: 4,
-      prepTime: 20,
-      cookTime: 30,
-      totalTime: 50,
-      id: 0,
-      time: "Breakfast",
-      imageUrl: './../../../assets/political.png',
-      // imageUrl: "https://via.placeholder.com/300", 
-      place: "African",
-      ingredients: [
-        "2 boneless, skinless chicken breasts",
-        "1 tablespoon olive oil",
-        "1 teaspoon dried oregano",
-        "1/2 teaspoon garlic powder",
-        "1/4 teaspoon salt",
-        "1/4 teaspoon black pepper",
-        "1 bunch asparagus, trimmed",
-        "1 lemon, sliced",
-      ],
-      instructions: [
-        "Preheat oven to 400°F (200°C). Lightly grease a baking sheet.",
-        "In a bowl, toss chicken breasts with olive oil, oregano, garlic powder, salt, and pepper.",
-        "Arrange chicken breasts on the prepared baking sheet. Scatter asparagus spears around the chicken.",
-        "Top with lemon slices.",
-        "Bake for 25 minutes, or until chicken is cooked through and asparagus is tender-crisp",
-      ],
-      tips: [
-        "For added flavor, marinate the chicken in the olive oil mixture for 30 minutes before baking.",
-        "You can substitute other vegetables for the asparagus, such as broccoli florets or bell peppers.",
-        "Serve with rice or quinoa for a complete meal.",
-      ],
-      comments: [{
-        sender: 'samsicker',
-        text: 'This recipe was delicious! I loved the flavor combinations.'
-      }],
-      owner: 'junior',
-      isFavourited: true,
-    }, {
-      title: 'Ugali Mayai',
-      yield: 4,
-      rating: 4,
-      prepTime: 20,
-      cookTime: 30,
-      totalTime: 50,
-      id: 0,
-      time: "Breakfast",
-      imageUrl: './../../../assets/political.png',
-      // imageUrl: "https://via.placeholder.com/300", 
-      place: "African",
-      ingredients: [
-        "2 boneless, skinless chicken breasts",
-        "1 tablespoon olive oil",
-        "1 teaspoon dried oregano",
-        "1/2 teaspoon garlic powder",
-        "1/4 teaspoon salt",
-        "1/4 teaspoon black pepper",
-        "1 bunch asparagus, trimmed",
-        "1 lemon, sliced",
-      ],
-      instructions: [
-        "Preheat oven to 400°F (200°C). Lightly grease a baking sheet.",
-        "In a bowl, toss chicken breasts with olive oil, oregano, garlic powder, salt, and pepper.",
-        "Arrange chicken breasts on the prepared baking sheet. Scatter asparagus spears around the chicken.",
-        "Top with lemon slices.",
-        "Bake for 25 minutes, or until chicken is cooked through and asparagus is tender-crisp",
-      ],
-      tips: [
-        "For added flavor, marinate the chicken in the olive oil mixture for 30 minutes before baking.",
-        "You can substitute other vegetables for the asparagus, such as broccoli florets or bell peppers.",
-        "Serve with rice or quinoa for a complete meal.",
-      ],
-      comments: [{
-        sender: 'samsicker',
-        text: 'This recipe was delicious! I loved the flavor combinations.'
-      }],
-      owner: 'junior',
-      isFavourited: true,
-    }, {
-      title: 'Ugali Mayai',
-      yield: 4,
-      rating: 4,
-      prepTime: 20,
-      cookTime: 30,
-      totalTime: 50,
-      id: 0,
-      time: "Breakfast",
-      imageUrl: './../../../assets/political.png',
-      // imageUrl: "https://via.placeholder.com/300", 
-      place: "African",
-      ingredients: [
-        "2 boneless, skinless chicken breasts",
-        "1 tablespoon olive oil",
-        "1 teaspoon dried oregano",
-        "1/2 teaspoon garlic powder",
-        "1/4 teaspoon salt",
-        "1/4 teaspoon black pepper",
-        "1 bunch asparagus, trimmed",
-        "1 lemon, sliced",
-      ],
-      instructions: [
-        "Preheat oven to 400°F (200°C). Lightly grease a baking sheet.",
-        "In a bowl, toss chicken breasts with olive oil, oregano, garlic powder, salt, and pepper.",
-        "Arrange chicken breasts on the prepared baking sheet. Scatter asparagus spears around the chicken.",
-        "Top with lemon slices.",
-        "Bake for 25 minutes, or until chicken is cooked through and asparagus is tender-crisp",
-      ],
-      tips: [
-        "For added flavor, marinate the chicken in the olive oil mixture for 30 minutes before baking.",
-        "You can substitute other vegetables for the asparagus, such as broccoli florets or bell peppers.",
-        "Serve with rice or quinoa for a complete meal.",
-      ],
-      comments: [{
-        sender: 'samsicker',
-        text: 'This recipe was delicious! I loved the flavor combinations.'
-      }],
-      owner: 'junior',
-      isFavourited: true,
-    },
-  ];
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
+  onLogin(): void {
+    const params = new HttpParams()
+      .set("userNameorEmail", this.signInForm.value.userNameOrEmail)
+    this.authManService
+      .logInUser(this.signInForm.value, params)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          if (!!res && res.statusCode == 200) {
+            sessionStorage.setItem('username', res.entity.userName);
+            let route = `/home`;
+            this.router.navigate([route]);
+            this.snackbarManService.showNotificationMessage(res.message, "login-snackbar");
+          } else {
+            this.snackbarManService.showNotificationMessage(res.message, "login-snackbar");
+          }
+        },
+        error: (err) => {
+          this.snackbarManService.showNotificationMessage("Server Error!!", "snackbar-danger");
+        },
+        complete: () => { }
+      })
+  }
 
 }

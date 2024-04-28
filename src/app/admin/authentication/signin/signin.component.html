@@ -10,8 +10,8 @@
                     <P>EMAIL</P>                   
                 </div>
                 <mat-form-field appearance="outline" class="width">
-                    <input placeholder="Input Email" matInput formControlName="email" />
-                    <mat-error *ngIf="signInForm.get('email')?.hasError('required')">The
+                    <input placeholder="Input Email/Username" matInput formControlName="userNameOrEmail" />
+                    <mat-error *ngIf="signInForm.get('userNameOrEmail')?.hasError('required')">The
                         Email is required</mat-error>
                 </mat-form-field>
             </div>
@@ -28,7 +28,7 @@
                 </mat-form-field>
             </div>
         </form>
-        <button mat-raised-button color="primary" [disabled]="!signInForm.valid" (click)="login()"
+        <button mat-raised-button color="primary" [disabled]="!signInForm.valid" (click)="onLogin()"
             class="width padding">Login</button>
 
         <div class="forgot-password">
@@ -36,11 +36,6 @@
             <a href="/signup" color="primary">Create account</a>
         </div>
     </div>
-    <app-recipe-holder [recipes]="recipes"></app-recipe-holder>
+    <!-- <app-recipe-holder [recipes]="recipes"></app-recipe-holder> -->
 </section>
 
-
-
-
-<!-- your culinary companion, bringing you an array of recipes to tantalize your taste buds. -->
-<!-- BOTTOM CONTENT -->
