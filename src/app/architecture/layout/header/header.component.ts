@@ -16,7 +16,7 @@ export class HeaderComponent {
   currentUserName!: string | null;
   currentUserEmail!: string | null;
   hideSearch: string | null = this.currentUserName;
-  shouldDeferContent: boolean = false;
+  shouldDeferContent: boolean = true;
 
   constructor(
     private router: Router,

@@ -21,7 +21,6 @@ import { Router } from '@angular/router';
 export class RecipeviewerComponent {
 
   stars = [1, 2, 3, 4, 5];
-  commentForm: FormGroup
   rating: number = 4;
   recipe: any;
   isFavorite: boolean = true;
@@ -43,12 +42,7 @@ export class RecipeviewerComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router, 
-  ) {
-    this.commentForm = this.fb.group({
-      newComment: ['', [Validators.required]],
-      rating: [''],
-    })
-  }
+  ) { }
 
 
   ngOnInit(): void {

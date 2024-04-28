@@ -101,14 +101,6 @@
         <div class="review-box">
             <div class="popup-container">
                 <div class="search-container">
-                    <!-- <form [formGroup]="commentForm">
-                    <div>
-                        <mat-form-field class="search-input" appearance="outline">
-                            <textarea placeholder="Review the recipe" matInput formControlName="newComment"></textarea>
-
-                        </mat-form-field>
-                    </div>
-                </form> -->
                     <textarea type="text" class="search-input" placeholder="Review the recipe"
                         [(ngModel)]="newComment"></textarea>
                     <button class="button" mat-button color="primary" (click)="addComment()">
