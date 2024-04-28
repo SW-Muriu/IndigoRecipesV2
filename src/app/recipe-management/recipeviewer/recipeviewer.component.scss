@@ -1,0 +1,152 @@
+.container {
+    display: flex;
+    // justify-content: center;
+    justify-content: space-evenly;
+    margin-left: 20%;
+    margin-right: 30%;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        margin-left: 10%;
+        margin-right: 30%;
+    }
+}
+
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        font-size: 24px;
+        color: #ccc; // Default star color
+        cursor: pointer;
+    }
+
+    .active {
+        color: #292c6b; // Color for active stars
+    }
+}
+
+
+//Review and Share buttons
+.button-group {
+    display: flex;
+    align-items: center;
+    color: #ccc;
+
+    .button {
+        display: flex;
+        align-items: center;
+        color: #292c6b;
+        text-transform: none; // Ensure text is not capitalized
+
+        .mat-icon {
+            margin-right: 4px; // Adjust icon spacing as needed
+        }
+    }
+
+    .separator {
+        margin: 0 8px; // Adjust spacing between buttons and separator
+    }
+}
+
+//time boxing
+.timebox {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #292c6b;
+    padding: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
+.item {
+    flex: 1 1;
+    /* Adjust flex properties as needed */
+    padding: 5px;
+    text-align: center;
+}
+
+.image-box {
+    border: 1px solid #292c6b;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
+//Review Section
+.review-box {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #292c6b;
+    padding: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+
+    .popup-container {
+        // width: 400px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 20px;
+
+
+    }
+
+    .messages-container {
+        max-height: 90%;
+        overflow-y: auto;
+    }
+
+    .comment {
+        margin-bottom: 10px;
+    }
+
+    .comment-header {
+        font-weight: bold;
+    }
+
+    .comment-body {
+        margin-top: 5px;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        border: 1px so #292c6b;
+
+        .search-input {
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #292c6b;
+            border-radius: 5px;
+            color: #292c6b;
+            position: relative;
+            padding-right: 35px;
+        }
+
+        .button {
+            border-color: #292c6b;
+        }
+    }
+
+    .width {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        padding: 2px;
+        border-radius: 20%;
+        flex-basis: 100%;
+    }
+}

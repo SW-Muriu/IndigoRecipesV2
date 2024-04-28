@@ -12,14 +12,14 @@ import { NotificationService } from '../../architecture/services/notification/no
   selector: 'app-recipe-holder',
   standalone: true,
   imports: [
-    SharedModule, 
-    HeaderComponent, 
+    SharedModule,
+    HeaderComponent,
     FooterComponent,
   ],
   templateUrl: './recipe-holder.component.html',
   styleUrl: './recipe-holder.component.scss'
 })
-export class RecipeHolderComponent implements OnInit {
+export class RecipeHolderComponent {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
   @Input() recipes: Recipe[] | null = null;
@@ -67,17 +67,12 @@ export class RecipeHolderComponent implements OnInit {
 
   hoverUnderline: boolean = false
   stars = [1, 2, 3, 4, 5];
-  rating: number = 4;
+  rating!: number;
 
   constructor(
     private recipeManService: RecipeService,
     private snackbar: NotificationService,
   ) {
-    
-  }
-
-  ngOnInit(): void {
-    console.log(this.rating);
 
   }
 
@@ -89,8 +84,8 @@ export class RecipeHolderComponent implements OnInit {
   /** View More Details on a singular recipe */
   onViewMore(id: number): void {
     console.log("Selected");
-    
-  } 
+
+  }
 
 
   onLike(id: number): void {
@@ -107,13 +102,13 @@ export class RecipeHolderComponent implements OnInit {
               break;
             default:
               this.snackbar.showNotificationMessage(res.message, "snackbar-danger");
-          }   
-        }, 
+          }
+        },
         error: (err) => {
           this.snackbar.showNotificationMessage("Server Error", "snackbar-danger");
-        }, 
-        complete: ()=>{},
-    })
-  } 
+        },
+        complete: () => { },
+      })
+  }
 
 }

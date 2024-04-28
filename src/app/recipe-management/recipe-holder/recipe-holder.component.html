@@ -17,7 +17,7 @@
                         <mat-card-title (click)="onViewMore(recipe.id)">{{recipe.title}}</mat-card-title>
                         <mat-card-subtitle>
                             <div class="rating">
-                                <mat-icon *ngFor="let star of stars" [class.active]="star <= rating">star</mat-icon>
+                                <mat-icon *ngFor="let star of stars" [class.active]="star <= recipe.rating">star</mat-icon>
                             </div>
                         </mat-card-subtitle>
 

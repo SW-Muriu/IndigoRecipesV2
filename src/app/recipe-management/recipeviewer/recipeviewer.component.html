@@ -1,0 +1,143 @@
+<app-header></app-header>
+<main class="container">
+    <section class="content-below-header">
+        <h2>
+            <Strong>{{recipe.title}}</Strong>
+        </h2>
+        <div class="rating">
+            <mat-icon *ngFor="let star of stars" [class.active]="star <= recipe.rating">star</mat-icon> <strong>||
+                {{recipe.comments.length}}
+                Review(s)</strong>
+        </div>
+        <p>
+            {{recipe.description}}
+        </p>
+        Submitted by<strong> {{recipe.owner}}</strong>
+
+        <br>
+
+        <div class="button-group">
+            <button mat-button (click)="saveClicked(recipe.id)" class="button">
+                Save
+                @if(recipe.isFavourited){
+                <mat-icon>favorite</mat-icon>
+                }
+                @else {
+                <mat-icon>favorite_border</mat-icon>
+                }
+
+            </button>
+            <span class="separator">|</span>
+            <button mat-button (click)="rateClicked(recipe.id)" class="button">
+                Rate
+                <mat-icon>star_outline</mat-icon>
+
+            </button>
+            <span class="separator">|</span>
+            <button mat-button (click)="shareClicked(recipe.id)" class="button">
+                <mat-icon>share</mat-icon>
+                Share
+            </button>
+        </div>
+        <br>
+        <div>
+            <img class="image-box" [src]="imageUrl" alt="Testrecipe">
+        </div>
+        <br>
+        <div class="timebox">
+            <div class="item">
+                <strong><span>Prep Time:</span></strong>
+                <p><span>{{recipe.prepTime}} minutes</span></p>
+            </div>
+            <div class="item">
+                <strong><span>Cook Time:</span></strong>
+                <p><span>{{recipe.cookTime}} minutes</span></p>
+            </div>
+            <div class="item">
+                <strong><span>Total Time:</span></strong>
+                <p><span>{{recipe.totalTime}} minutes</span></p>
+            </div>
+            <div class="item">
+                <strong><span>Yield:</span></strong>
+                <p><span>{{recipe.yield}} servings</span></p>
+            </div>
+        </div>
+        <br>
+        <!-- Listing Ingredients -->
+        <h3><strong>Ingredients</strong></h3>
+        <ul>
+            @for(ingredient of recipe.ingredients; track ingredient){
+            <li> {{ ingredient }}</li>
+            }
+            @empty {
+            <li>No Ingredients Found</li>
+            }
+        </ul>
+
+        <!-- Instructions -->
+        <h3><strong>Instructions</strong></h3>
+        <ul>
+            @for(instruction of recipe.instructions; track instruction){
+            <li> {{ instruction }}</li>
+            }
+            @empty {
+            <li>No Instruction Found</li>
+            }
+        </ul>
+
+        <!-- Tips -->
+        <h3><strong>Tips</strong></h3>
+        <ul>
+            @for(tip of recipe.tips; track tip){
+            <li> {{ tip }}</li>
+            }
+            @empty {
+            <li>No Tips Found</li>
+            }
+        </ul>
+
+        <!-- Review Section -->
+        <h3><strong>Reviews</strong></h3>
+        <div class="review-box">
+            <div class="popup-container">
+                <div class="search-container">
+                    <!-- <form [formGroup]="commentForm">
+                    <div>
+                        <mat-form-field class="search-input" appearance="outline">
+                            <textarea placeholder="Review the recipe" matInput formControlName="newComment"></textarea>
+
+                        </mat-form-field>
+                    </div>
+                </form> -->
+                    <textarea type="text" class="search-input" placeholder="Review the recipe"
+                        [(ngModel)]="newComment"></textarea>
+                    <button class="button" mat-button color="primary" (click)="addComment()">
+                        Submit</button>
+                </div>
+                <hr>
+                <div class="message-container">
+                    @for(comment of recipe.comments; track comment.sender){
+                    <div class="comment">
+                        <div class="comment-header">
+                            {{comment.sender}}
+                        </div>
+                        <div class="comment-body">
+                            {{comment.text}}
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+        <br>
+        <!-- Back Home Button -->
+        <div >
+            <button class="width" mat-raised-button color="primary"  (click)="navigateBackHome()" >Navigate Back
+                Home</button>
+        </div>
+
+    </section>
+</main>
