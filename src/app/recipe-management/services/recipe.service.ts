@@ -10,6 +10,7 @@ import { Recipe } from '../../architecture/utils/interfaces';
 export class RecipeService {
 
   serverUrl: String = `${environment.baseUrl}/ap1/v1/recipes`;
+  shouldDeferContent: boolean = false;
 
   constructor(
     private _http: HttpClient

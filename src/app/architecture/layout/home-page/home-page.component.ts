@@ -30,6 +30,7 @@ export class HomePageComponent implements OnDestroy, OnInit{
   reviewsArray: { sender: string, message: string }[] = [];
   currentIndex: number = 0;
   recipes: Recipe[] = [];
+  shouldDeferContent: boolean = false;
   
 
 

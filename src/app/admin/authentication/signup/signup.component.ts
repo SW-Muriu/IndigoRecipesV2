@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../../architecture/modules/shared.module';
 import { FooterComponent } from '../../../architecture/layout/footer/footer.component';
-import { RecipeService } from '../../../recipe-management/services/recipe.service';
 import { NotificationService } from '../../../architecture/services/notification/notification.service';
 import { AuthService } from '../../services/authservices/auth.service';
 import { Subject, takeUntil } from 'rxjs';

@@ -27,6 +27,7 @@ export class MultiRecipeviewerComponent {
   myRecipes: Recipe[] = [];
   recipes: Recipe[] = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
+  shouldDeferContent: boolean = true;
 
   constructor(
     private recipeManService: RecipeService,
@@ -37,6 +38,7 @@ export class MultiRecipeviewerComponent {
   }
 
   ngOnInit(): void {
+    this.recipeManService.shouldDeferContent = true;
     this.getAllRecipes();
     this.getMyRecipes();
     this.getSavedRecipes();
@@ -113,5 +115,35 @@ export class MultiRecipeviewerComponent {
         },
         complete: () => { }
       })
+  }
+
+  //Onsearch
+  onSearch(searchValue: string) {
+    console.log("SEARCHING");
+    
+    this.myRecipes = this.searchThroughRecipes(this.myRecipes, searchValue);
+    this.favRecipes = this.searchThroughRecipes(this.favRecipes, searchValue);
+    this.recipes = this.searchThroughRecipes(this.recipes, searchValue);
+  }
+
+  searchThroughRecipes(recipes: Recipe[], searchValue: string): Recipe[] {
+    if (!searchValue) {
+      return recipes;
+    } else {
+      searchValue = searchValue.toLowerCase();
+      return recipes.filter(recipe => {
+        return recipe.place?.toLowerCase().includes(searchValue) ||
+          recipe.owner?.toLowerCase().includes(searchValue) ||
+          recipe.time?.toLowerCase().includes(searchValue) ||
+          recipe.title?.toLowerCase().includes(searchValue);
+      })
+    }
+  }
+
+  //clear search 
+  onClearSearch($event: string): void {
+    this.getAllRecipes();
+    this.getMyRecipes();
+    this.getSavedRecipes();
   }
 }

@@ -1,27 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../modules/shared.module';
+import { RecipeService } from '../../../recipe-management/services/recipe.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    SharedModule
+    SharedModule, 
+    FormsModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  
+  searchTerm: string = '';
   currentUserName!: string | null;
   currentUserEmail!: string | null;
   hideSearch: string | null = this.currentUserName;
-  shouldDeferContent: boolean = false;
+  @Input() shouldDeferContent: boolean = false;
+  @Output() searchValue = new EventEmitter<string>()
+  @Output() clearSearch = new EventEmitter<string>()
+  // shouldDeferContent: boolean;
 
   constructor(
     private router: Router,
+    private recipeManService: RecipeService,
 
   ) {
+    this.shouldDeferContent = this.recipeManService.shouldDeferContent;
    }
 
 
@@ -29,6 +37,14 @@ export class HeaderComponent {
     this.currentUserName = sessionStorage.getItem('username');
     this.currentUserEmail = sessionStorage.getItem('email');
 
+  }
+
+  performSearch() {
+    this.searchValue.emit(this.searchTerm)
+  }
+
+  clearSearchTerm() {
+    this.clearSearch.emit();
   }
 
 
