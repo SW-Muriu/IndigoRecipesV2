@@ -7,6 +7,7 @@ import { RecipeService } from '../services/recipe.service';
 import { Subject, takeUntil } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { NotificationService } from '../../architecture/services/notification/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-holder',
@@ -72,6 +73,7 @@ export class RecipeHolderComponent {
   constructor(
     private recipeManService: RecipeService,
     private snackbar: NotificationService,
+    private router: Router
   ) {
 
   }
@@ -83,7 +85,12 @@ export class RecipeHolderComponent {
 
   /** View More Details on a singular recipe */
   onViewMore(id: number): void {
-    console.log("Selected");
+    let route = '/recipe/viewer';
+    this.router.navigate([route], {
+      queryParams: {
+        id: id
+      }
+    })
 
   }
 

@@ -59,6 +59,8 @@ export class SignupComponent {
             const email = res.entity.email;
             sessionStorage.setItem('email', email);
             sessionStorage.setItem('username', username);
+            sessionStorage.setItem('firstName', this.signupForm.value.firstName);
+            sessionStorage.setItem('lastName', this.signupForm.value.lastName);
             let route = '/home';
             this.router.navigate([route]);
             this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");

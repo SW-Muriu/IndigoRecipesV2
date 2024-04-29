@@ -25,36 +25,20 @@ export interface UserMenuItem {
 export class ProfileManagementComponent {
 
   profileForm: FormGroup
-  @Input() userName = 'John Doe'; // Input property for user name
-  @Output() selectedItem = new EventEmitter<string>();
-  
-
-  menuItems: UserMenuItem[] = [
-    { label: 'Personal Information', selected: true },
-    { label: 'Change Password', selected: false }
-  ];
-
-  onMenuItemClick(item: UserMenuItem) {
-    this.menuItems.forEach(i => i.selected = false);
-    item.selected = true;
-    this.selectedItem.emit(item.label);
-  }
 
   constructor(
     private fb: FormBuilder,
   ) {
     this.profileForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.email, Validators.required]],
-      username: ['', [Validators.required],],
+      firstName: [sessionStorage.getItem('firstName'), [Validators.required]],
+      lastName: [sessionStorage.getItem('lastName'), [Validators.required]],
+      email: [sessionStorage.getItem('email'), [Validators.email, Validators.required]],
+      username: [sessionStorage.getItem('username'), [Validators.required],],
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
     });
   }
 
-  onAction1(): void {
-
-  }
+ 
 
 }

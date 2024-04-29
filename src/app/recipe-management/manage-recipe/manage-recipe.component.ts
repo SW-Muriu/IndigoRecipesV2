@@ -120,6 +120,7 @@ export class ManageRecipeComponent {
   initEmptyRecipeDetailsForm(): void {
     this.recipeDetailsForm = this.fb.group({
       title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
       yield: ['', [Validators.required]],
       prepTime: ['', [Validators.required]],
       cookTime: ['', [Validators.required]],
@@ -185,16 +186,7 @@ export class ManageRecipeComponent {
 
   }
 
-  /**** Fetch a single recipe for update */
-  searchRecipesByTitle(recipes: Recipe[], searchTerm: string): Recipe[] {
-    if (!searchTerm) {
-      return recipes;
-    }
-    searchTerm = searchTerm.toLowerCase();
-    return recipes.filter(recipe => {
-      return recipe.title?.toLowerCase().includes(searchTerm);
-    });
-  }
+
 
   /**** Populate forms with the recieved data */
   populateFormsWithData(): void {
@@ -227,6 +219,7 @@ export class ManageRecipeComponent {
   onSubmit(): void {
     const payload: any = {
       title: this.recipeDetailsForm.value.title,
+      description: this.recipeDetailsForm.value.description,
       yield: this.recipeDetailsForm.value.yield,
       prepTime: this.recipeDetailsForm.value.prepTime,
       cookTime: this.recipeDetailsForm.value.cookTime,
@@ -244,6 +237,7 @@ export class ManageRecipeComponent {
 
     const UpdatePayload: any = {
       title: this.recipeDetailsForm.value.title,
+      description: this.recipeDetailsForm.value.description,
       yield: this.recipeDetailsForm.value.yield,
       prepTime: this.recipeDetailsForm.value.prepTime,
       cookTime: this.recipeDetailsForm.value.cookTime,
@@ -330,6 +324,7 @@ export class ManageRecipeComponent {
             //Initialize recipe Details form with data 
             this.recipeDetailsForm = this.fb.group({
               title: [this.formData.title, [Validators.required]],
+              description: [this.formData.description, [Validators.required]],
               yield: [this.formData.yield, [Validators.required]],
               prepTime: [this.formData.prepTime, [Validators.required]],
               cookTime: [this.formData.cookTime, [Validators.required]],

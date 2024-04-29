@@ -12,6 +12,9 @@
         <p>
             {{recipe.description}}
         </p>
+        <p>
+            {{recipe.place}} || {{recipe.time}}
+        </p>
         Submitted by<strong> {{recipe.owner}}</strong>
 
         <br>
@@ -34,7 +37,7 @@
 
             </button>
             <span class="separator">|</span>
-            <button mat-button (click)="shareClicked(recipe.id)" class="button">
+            <button mat-button (click)="shareClicked(recipe.title)" class="button">
                 <mat-icon>share</mat-icon>
                 Share
             </button>
@@ -43,6 +46,8 @@
         <div>
             <img class="image-box" [src]="imageUrl" alt="Testrecipe">
         </div>
+        <br>
+      
         <br>
         <div class="timebox">
             <div class="item">
@@ -95,6 +100,20 @@
             <li>No Tips Found</li>
             }
         </ul>
+
+        <br>
+        <div class="button-group">
+            <button mat-button (click)="editClicked(recipe.id)" class="button">
+                Edit
+                <mat-icon>edit</mat-icon>
+            </button>
+            <span class="separator">|</span>
+            <button mat-button (click)="deleteClicked(recipe)" class="button">
+                <mat-icon>delete</mat-icon>
+                Delete
+            </button>
+        </div>
+        <br>
 
         <!-- Review Section -->
         <h3><strong>Reviews</strong></h3>

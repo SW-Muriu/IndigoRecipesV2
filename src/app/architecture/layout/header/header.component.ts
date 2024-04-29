@@ -35,7 +35,7 @@ export class HeaderComponent {
   /**** Adding a recipe */
   addRecipe(): void {
     console.log("Adding Recipe");
-    let route = 'recipe/holder';
+    let route = 'manage/recipe';
     this.router.navigate([route]);
   }
 

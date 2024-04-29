@@ -33,7 +33,7 @@
                 <mat-tab label="MY RECIPES">
                     @if(myRecipes.length != 0){
                     <div>
-                        <app-recipe-holder [recipes]="favRecipes">
+                        <app-recipe-holder [recipes]="myRecipes">
                         </app-recipe-holder>
                     </div>
                     } @else {

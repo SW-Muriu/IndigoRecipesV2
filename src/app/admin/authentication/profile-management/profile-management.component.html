@@ -1,5 +1,5 @@
 <app-header></app-header>
-
+<br>
 <section class="content-below-header">
     <div class="container">
 
@@ -41,8 +41,8 @@
                                     <p><strong>First Name</strong></p>
                                 </div>
                                 <mat-form-field appearance="outline" class="span-length">
-                                    <input placeholder="e.g. John" matInput formControlName="password" />
-                                    <mat-error *ngIf="profileForm.get('password')?.hasError('required')">The
+                                    <input placeholder="e.g. John" matInput formControlName="firstName" />
+                                    <mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">The
                                         First is required</mat-error>
                                 </mat-form-field>
                             </div>
@@ -52,8 +52,8 @@
                                     <p><strong>Second Name</strong></p>
                                 </div>
                                 <mat-form-field appearance="outline" class="span-length">
-                                    <input placeholder="e.g. Doe" matInput formControlName="password" />
-                                    <mat-error *ngIf="profileForm.get('password')?.hasError('required')">The
+                                    <input placeholder="e.g. Doe" matInput formControlName="lastName" />
+                                    <mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">The
                                         Second is required</mat-error>
                                 </mat-form-field>
                             </div>
@@ -62,8 +62,8 @@
                                     <p><strong>User Name</strong></p>
                                 </div>
                                 <mat-form-field appearance="outline" class="span-length">
-                                    <input placeholder="e.g. Johndoe" matInput formControlName="password" />
-                                    <mat-error *ngIf="profileForm.get('password')?.hasError('required')">The
+                                    <input placeholder="e.g. Johndoe" matInput formControlName="username" />
+                                    <mat-error *ngIf="profileForm.get('username')?.hasError('required')">The
                                         User Name is required</mat-error>
                                 </mat-form-field>
                             </div>
@@ -80,4 +80,4 @@
     </div>
 
 </section>
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->

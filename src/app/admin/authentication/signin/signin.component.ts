@@ -55,6 +55,9 @@ export class SigninComponent implements OnDestroy {
         next: (res) => {
           if (!!res && res.statusCode == 200) {
             sessionStorage.setItem('username', res.entity.userName);
+            sessionStorage.setItem('firstName', res.entity.firstName);
+            sessionStorage.setItem('lastName', res.entity.lastName);
+            sessionStorage.setItem('email', res.entity.email);
             let route = `/home`;
             this.router.navigate([route]);
             this.snackbarManService.showNotificationMessage(res.message, "login-snackbar");
