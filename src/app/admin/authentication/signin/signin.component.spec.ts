@@ -9,32 +9,41 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 
 describe('SigninComponent', () => {
-  let component: SigninComponent;
-  let fixture: ComponentFixture<SigninComponent>;
-  let fb: FormBuilder;
-  let snackbarManService: NotificationService;
-  let authManService: AuthService;
+    let component: SigninComponent
+    let fixture: ComponentFixture<SigninComponent>;
+    let fb: FormBuilder;
+    let notificationMan: NotificationService;
+    let authManService: AuthService;
+    let router: Router
+
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [
+          SigninComponent,
+          SharedModule,
+          BrowserAnimationsModule
+          ],
+        providers: [
+          FormBuilder,
+          { provide: NotificationService, useValue: {} },
+          { provide: AuthService, useValue: {} },
+          { provide: Router, useValue: {} }
+
+        ]
+      })
+        .compileComponents();
 
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SigninComponent, SharedModule, BrowserAnimationsModule],
-      providers: [
-        FormBuilder,
-        { provide: NotificationService, useValue: {} },
-        { provide: AuthService, useValue: {} },
-        { provide: Router, useValue: {} }
-]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(SigninComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+      fixture = TestBed.createComponent(SigninComponent);
+      authManService = TestBed.inject(AuthService);
+      router = TestBed.inject(Router);
+      notificationMan = TestBed.inject(NotificationService);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+  })
 
-});

@@ -39,6 +39,7 @@ export class MultiRecipeviewerComponent {
   ngOnInit(): void {
     this.getAllRecipes();
     this.getMyRecipes();
+    this.getSavedRecipes();
   }
 
 
@@ -83,6 +84,26 @@ export class MultiRecipeviewerComponent {
         next: (res) => {
           if (res.statusCode == 200) {
             this.myRecipes = res.entity;
+          } else {
+            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
+          }
+        },
+        error: (err) => {
+          this.snackbarManService.showNotificationMessage("server-error!!", "snackbar-danger");
+        },
+        complete: () => { }
+      })
+  }
+
+  //Get Saved Recipes
+  getSavedRecipes(): void {
+    this.recipeManService
+      .fetchFavRecipes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          if (res.statusCode == 200) {
+            this.favRecipes = res.entity;
           } else {
             this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
           }

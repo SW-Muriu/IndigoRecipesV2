@@ -5,8 +5,11 @@
     "outDir": "./out-tsc/spec",
     "types": [
       "jest"
-    ]
+    ],
+    "module": "CommonJS",
+    "allowJs": true
   },
+  "esModuleInterop": true,
   "files" :[
     "src/setup-jest.ts"
   ],

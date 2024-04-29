@@ -126,6 +126,8 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
+          console.log(res);
+          
           if (res.statusCode == 200) {
             this.recipe = res.entity;
           }
