@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../services/notification/notification.service';
 import { RecipeService } from '../../../recipe-management/services/recipe.service';
+import { signal } from '@angular/core';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -19,14 +20,15 @@ describe('HomePageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HomePageComponent, SharedModule, BrowserAnimationsModule]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     routerMock = TestBed.inject(Router);
     snackbarMock = TestBed.inject(NotificationService);
     recipeServiceMock = TestBed.inject(RecipeService);
+
   });
 
   it('should create', () => {
@@ -51,7 +53,7 @@ describe('HomePageComponent', () => {
     component.ngOnInit();
 
     expect(jestSpy).toHaveBeenCalledWith();
-  })
+  });
 
   it('should Navigate', () => {
     const navigateSpy = jest.spyOn(routerMock, 'navigate');
@@ -62,5 +64,24 @@ describe('HomePageComponent', () => {
 
     //Assert exact route
     expect(navigateSpy).toHaveBeenCalledWith([mockRoute]);
+  });
+
+  it('should navigate to the next and previous reviews', () => {
+    spyInstance = jest.spyOn(component, 'nextReview');
+    component.currentIndex$.update((c) => c + 2);
+    component.nextReview();
+
+    expect(spyInstance).toHaveBeenCalled();
+    expect(component.currentIndex$()).toBe(3);
+
+  });
+  
+
+  it('should navigate to previous index', () => {
+    spyInstance = jest.spyOn(component, 'prevReview');
+    component.prevReview();
+
+    expect(spyInstance).toHaveBeenCalled();
+    expect(component.currentIndex$()).toBe(6);
   })
 });

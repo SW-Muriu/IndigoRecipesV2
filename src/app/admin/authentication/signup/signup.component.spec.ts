@@ -7,8 +7,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../architecture/services/notification/notification.service';
 import { AuthService } from '../../services/authservices/auth.service';
-import { RecipeService } from '../../../recipe-management/services/recipe.service';
-import { Subject, of } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;

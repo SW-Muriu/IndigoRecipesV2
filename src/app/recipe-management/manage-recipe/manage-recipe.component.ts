@@ -17,7 +17,7 @@ import { Option } from '../../architecture/utils/interfaces';
   standalone: true,
   imports: [
     SharedModule,
-    HeaderComponent, 
+    HeaderComponent,
     FooterComponent,
     HttpClientModule,
   ],
@@ -88,23 +88,18 @@ export class ManageRecipeComponent {
     this.initEmptyRecipeDetailsForm();
 
 
-    if (!this.route.queryParams) {
-      this.pageFunction = 'Add';
-    } else {
-      this.route.queryParams.subscribe({
-        next: (params) => {
-          if (params.hasOwnProperty('data')) {
-            const serializedData = params["data"];
-            const searchTerm = JSON.parse(serializedData);
-            console.log("SearchTerm:", searchTerm);
-            this.formData = this.onSearchRecipe(searchTerm);
-
-            //Populate the forms with the collected nested arrays data
-            this.populateFormsWithData();
-          }
+    if (!this.route.queryParams) this.pageFunction = 'Add';
+    this.route.queryParams.subscribe({
+      next: (params) => {
+        if (params.hasOwnProperty('data')) {
+          this.formData = this.onSearchRecipe(JSON.parse(params["data"]));
+          
+          //Populate the forms with the collected nested arrays data
+          this.populateFormsWithData();
         }
-      })
-    }
+      }
+    })
+
   }
 
   ngOnDestroy(): void {
@@ -236,7 +231,7 @@ export class ManageRecipeComponent {
     }
 
     console.log("Sumission Payload");
-    
+
 
     const UpdatePayload: any = {
       title: this.recipeDetailsForm.value.title,
@@ -309,7 +304,6 @@ export class ManageRecipeComponent {
   onSearchRecipe(id: number): [] {
     const params = new HttpParams()
       .set("id", id)
-
     this.recipeManService
       .searchRecipeById(params)
       .pipe(takeUntil(this.destroy$))

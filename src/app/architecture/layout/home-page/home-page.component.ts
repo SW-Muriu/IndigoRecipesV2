@@ -28,7 +28,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
   stars = [1, 2, 3, 4, 5];
   rating: number = 4;
   reviewsArray: { sender: string, message: string }[] = [];
-  currentIndex$ = signal<number>(0)
+  currentIndex$ = signal<number>(0);
   recipes: Recipe[] = [];
   shouldDeferContent: boolean = false;
 
@@ -60,7 +60,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
   }
 
   /** Navigating through the reviews */
-  nextReview(): void {
+  nextReview(): void  {
     this.currentIndex$.update((defaultValue) => (defaultValue + 1) % this.reviewsArray.length);
   }
 
