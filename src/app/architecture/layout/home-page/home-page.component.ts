@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { SharedModule } from '../../modules/shared.module';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -22,16 +22,16 @@ import { NotificationService } from '../../services/notification/notification.se
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-export class HomePageComponent implements OnDestroy, OnInit{
+export class HomePageComponent implements OnDestroy, OnInit {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
   stars = [1, 2, 3, 4, 5];
   rating: number = 4;
   reviewsArray: { sender: string, message: string }[] = [];
-  currentIndex: number = 0;
+  currentIndex$ = signal<number>(0)
   recipes: Recipe[] = [];
   shouldDeferContent: boolean = false;
-  
+
 
 
   constructor(
@@ -61,11 +61,11 @@ export class HomePageComponent implements OnDestroy, OnInit{
 
   /** Navigating through the reviews */
   nextReview(): void {
-    this.currentIndex = (this.currentIndex + 1) % this.reviewsArray.length;
+    this.currentIndex$.update((defaultValue) => (defaultValue + 1) % this.reviewsArray.length);
   }
 
   prevReview(): void {
-    this.currentIndex = (this.currentIndex - 1 + this.reviewsArray.length) % this.reviewsArray.length;
+    this.currentIndex$.update((defaultValue) => (defaultValue - 1 + this.reviewsArray.length) % this.reviewsArray.length);
   }
 
 

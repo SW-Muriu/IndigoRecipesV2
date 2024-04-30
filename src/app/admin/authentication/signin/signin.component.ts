@@ -46,6 +46,8 @@ export class SigninComponent implements OnDestroy {
   }
 
   onLogin(): void {
+    console.log("formdata", this.signInForm);
+    
     const params = new HttpParams()
       .set("userNameorEmail", this.signInForm.value.userNameOrEmail)
     this.authManService

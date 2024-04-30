@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { SharedModule } from '../../modules/shared.module';
 import { RecipeService } from '../../../recipe-management/services/recipe.service';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../admin/services/authservices/auth.service';
+import { NotificationService } from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +29,8 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private recipeManService: RecipeService,
+    private authManService: AuthService,
+    private snackbar: NotificationService,
 
   ) {
     this.shouldDeferContent = this.recipeManService.shouldDeferContent;
@@ -62,9 +66,16 @@ export class HeaderComponent {
 
   /**** Logging out */
   onLogout(): void {
-    const route = '/#';
-    sessionStorage.removeItem("username");
-    this.router.navigate([route]);
+    this.authManService.logOutUser().subscribe({
+      next: (res) => {
+        if (res.statusCode == 200) {
+          this.snackbar.showNotificationMessage(res.message, "snackbar-success");
+          const route = '/#';
+          sessionStorage.removeItem("username");
+          this.router.navigate([route]);
+        }
+      }
+    })
   }
 
   updateProfile(): void {

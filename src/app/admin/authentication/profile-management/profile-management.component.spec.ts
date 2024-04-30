@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileManagementComponent } from './profile-management.component';
 import { SharedModule } from '../../../architecture/modules/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ProfileManagementComponent', () => {
   let component: ProfileManagementComponent;
@@ -9,7 +10,7 @@ describe('ProfileManagementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProfileManagementComponent, SharedModule]
+      imports: [ProfileManagementComponent, SharedModule, BrowserAnimationsModule]
     })
       .compileComponents();
 
@@ -21,4 +22,6 @@ describe('ProfileManagementComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  
 });

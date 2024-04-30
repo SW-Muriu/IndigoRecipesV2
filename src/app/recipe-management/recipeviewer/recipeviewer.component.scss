@@ -83,6 +83,10 @@
     border: 1px solid #292c6b;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     border-radius: 20px;
+    height: 300px;
+    // width: 300px;
+    width: auto;
+    object-fit: cover;
 }
 
 //Review Section

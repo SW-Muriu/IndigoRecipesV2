@@ -37,7 +37,7 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
   instructions: string[] = [];
   tips: string[] = [];
   newComment: string = "";
-  username: string = "Test User";
+  username: string | null = "";
   comments: Comment[] = [
     {
       sender: "Hello",
@@ -52,7 +52,9 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
     private recipeManService: RecipeService,
     private route: ActivatedRoute,
     private snackbarManService: NotificationService
-  ) { }
+  ) {
+    this.username = sessionStorage.getItem('username');
+   }
 
 
   ngOnInit(): void {
@@ -226,6 +228,21 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
     if (this.newComment.trim() !== '') {
       this.recipe.comments.unshift({ sender: `${this.username}`, text: this.newComment });
       this.newComment = '';
+
+      this.recipeManService
+        .updateRecipe(this.recipe)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            if (res.statusCode == 200) {
+              this.snackbarManService.showNotificationMessage("Recipe Reviewed Successfully!!", "snackbar-success");
+            }
+            this.snackbarManService.showNotificationMessage("There was a problem reviewing the recipe!!", "snackbar-danger");
+          }, 
+          error: (err) => {
+            this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
+          }
+      })
 
     }
   }

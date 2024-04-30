@@ -56,5 +56,7 @@ describe('HeaderComponent', () => {
     expect(navigateSpy).toHaveBeenCalled();
     // expect(mockRouter.navigate).toHaveBeenCalledWith(['manage/recipe']);
 
-  })
+  });
+
+
 });

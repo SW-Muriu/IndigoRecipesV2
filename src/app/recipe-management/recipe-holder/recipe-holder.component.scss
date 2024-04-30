@@ -33,6 +33,13 @@
     }
 }
 
+.img {
+    height: 300px;
+    // width: 300px;
+    width: auto;
+    object-fit: cover;
+}
+
 mat-card {
     padding-bottom: 0.5rem;
 }

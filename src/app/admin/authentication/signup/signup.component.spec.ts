@@ -8,16 +8,21 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../../architecture/services/notification/notification.service';
 import { AuthService } from '../../services/authservices/auth.service';
 import { RecipeService } from '../../../recipe-management/services/recipe.service';
+import { Subject, of } from 'rxjs';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
-  let recipeManService: RecipeService;
-  let snackbarManService: NotificationService;
-  let router: Router;
+  let authManService: any;
+  let snackbarManService: any;
+  let router: any;
+  let spyInstance: jest.SpyInstance;
+  
 
 
   beforeEach(async () => {
+
+
     await TestBed.configureTestingModule({
       imports: [
         SignupComponent,
@@ -26,15 +31,12 @@ describe('SignupComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: Router, useValue: {} },
-        { provide: AuthService, useValue: {} },
-        { provide: NotificationService, useValue: {} }
       ]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(SignupComponent);
-    recipeManService = TestBed.inject(RecipeService);
+    authManService = TestBed.inject(AuthService);
     snackbarManService = TestBed.inject(NotificationService);
     router = TestBed.inject(Router);
     component = fixture.componentInstance;
@@ -45,5 +47,47 @@ describe('SignupComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should complete the destroy$ subject on ngOnDestroy', () => {
+    const jestSpy = jest.spyOn(component, 'ngOnDestroy');
+    jest.spyOn(component.destroy$, 'next');
+    jest.spyOn(component.destroy$, 'complete');
+
+    component.ngOnDestroy();
+
+    expect(jestSpy).toHaveBeenCalledWith();
+    expect(component.destroy$.next).toHaveBeenCalledWith(true);
+    expect(component.destroy$.complete).toHaveBeenCalledWith();
+    
+  });
+
+  it('should register user and navigate to home on successful signup', () => {
+    //Mock Form
+    component.signupForm.setValue({
+      firstName: 'Test',
+      lastName: 'User',
+      email: 'test@example.com',
+      userName: 'testuser',
+      password: 'password',
+      confirmPassword: 'password',
+    }); 
+
+    //Mock Response
+    const successfulResponse = {
+      statusCode: 200,
+      message: 'User registered successfully!',
+      entity: { userName: 'testuser', email: 'test@example.com' },
+    };
+
+    spyInstance = jest.spyOn(authManService, 'registerUser').mockReturnValue(of(successfulResponse));
+
+    component.onSignUp();
+
+    expect(spyInstance).toHaveBeenCalledWith(component.signupForm.value);
+    // expect(snackbarManService).toHaveBeenCalledWith(successfulResponse.message, "snackbar-success");
+    // expect(sessionStorage.getItem('email')).toEqual(successfulResponse.entity.email);
+    // expect(sessionStorage.getItem('username')).toEqual(successfulResponse.entity.userName);
+    // expect(router.navigate).toHaveBeenCalledWith(['/home']);
+
+  })
   
 });

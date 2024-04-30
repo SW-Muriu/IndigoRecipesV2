@@ -49,9 +49,9 @@
         <div class="reviews-container">
             <div class="review">
                 <div class="arrow left" (click)="prevReview()">&#9664;</div>
-                <div class="message">{{ reviewsArray[currentIndex].message }}
+                <div class="message">{{ reviewsArray[currentIndex$()].message }}
                     <br>
-                    <div> ~<strong>{{ reviewsArray[currentIndex].sender }}</strong></div>
+                    <div> ~<strong>{{ reviewsArray[currentIndex$()].sender }}</strong></div>
                 </div>
                 <div class="arrow right" (click)="nextReview()">&#9654;</div>
             </div>

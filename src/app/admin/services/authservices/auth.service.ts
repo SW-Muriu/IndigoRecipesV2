@@ -26,4 +26,10 @@ export class AuthService {
     const loginUrl = `${this.serverUrl}/signIn`;
     return this._http.post<any[]>(loginUrl, loginData, { params: params });
   }
+
+  //Logout User
+  logOutUser(): Observable<any>{
+    const logoutUrl = `${this.serverUrl}/logout`;
+    return this._http.put<any>(logoutUrl, {});
+  }
 }

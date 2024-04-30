@@ -27,7 +27,7 @@ export class SignupComponent {
   constructor(
     private fb: FormBuilder, 
     private router: Router, 
-    private recipeManService: AuthService,
+    private authManService: AuthService,
     private snackbarManService: NotificationService,
   ) {
     this.signupForm = this.fb.group({
@@ -48,7 +48,7 @@ export class SignupComponent {
 
 
   onSignUp(): void {
-    this.recipeManService
+    this.authManService
       .registerUser(this.signupForm.value)
       .pipe(takeUntil(this.destroy$))
       .subscribe({

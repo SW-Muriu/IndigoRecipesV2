@@ -235,6 +235,9 @@ export class ManageRecipeComponent {
       // id: 0,
     }
 
+    console.log("Sumission Payload");
+    
+
     const UpdatePayload: any = {
       title: this.recipeDetailsForm.value.title,
       description: this.recipeDetailsForm.value.description,
@@ -333,7 +336,7 @@ export class ManageRecipeComponent {
             });
 
 
-            //Call the dat for the nested arrays of the recipeDetails Form
+            //Call the data for the nested arrays of the recipeDetails Form
             this.ingeredientsData = this.formData.ingredients
             this.tipsData = this.formData.tips;
             this.instructionsData = this.formData.instructions;
