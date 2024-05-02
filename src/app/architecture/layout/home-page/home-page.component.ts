@@ -4,6 +4,7 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { RecipeHolderComponent } from '../../../recipe-management/recipe-holder/recipe-holder.component';
 import { Recipe } from '../../utils/interfaces';
+import { sampledReviews } from '../../utils/interfaces';
 
 import { Router } from '@angular/router';
 import { RecipeService } from '../../../recipe-management/services/recipe.service';
@@ -40,7 +41,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
     private snackbarManService: NotificationService,
   ) {
     // this.recipes = this.recipeManService.sampledRecipes;
-    this.reviewsArray = this.recipeManService.sampledReviews;
+    this.reviewsArray = sampledReviews;
   }
 
   ngOnInit(): void {
