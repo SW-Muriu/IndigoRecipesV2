@@ -121,18 +121,18 @@ describe('ManageRecipeComponent', () => {
   })
 
 
-  it('should return empty array when ingredientsForm.ingredients is not a FormArray', () => {
-    // Case 1: ingredientsForm.ingredients is undefined
-    // component.ingredientsForm = null; // Set ingredientsForm to undefined
-    expect(component.ingredientControls).toEqual([]); // Expect empty array
-  });
-
   // it('should return empty array when ingredientsForm.ingredients is not a FormArray', () => {
-  //   // Case 2: ingredientsForm.ingredients is a FormGroup (wrong type)
-  //   component.ingredientsForm = fb.group({ someControl: [''] }); // Set ingredientsForm to a FormGroup
-
+  //   // Case 1: ingredientsForm.ingredients is undefined
+  //   component.ingredientsForm = undefined; // Set ingredientsForm to undefined
   //   expect(component.ingredientControls).toEqual([]); // Expect empty array
   // });
+
+  it('should return empty array when ingredientsForm.ingredients is not a FormArray', () => {
+    // Case 2: ingredientsForm.ingredients is a FormGroup (wrong type)
+    component.ingredientsForm = fb.group({ someControl: [''] }); // Set ingredientsForm to a FormGroup
+
+    expect(component.ingredientControls).toEqual([]); // Expect empty array
+  });
 
   it('should return the controls as FormControl[] when ingredientsForm.ingredients is a FormArray', () => {
     // Case 3: ingredientsForm.ingredients is a FormArray with controls
