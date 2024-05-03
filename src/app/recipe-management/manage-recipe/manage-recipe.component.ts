@@ -34,7 +34,7 @@ export class ManageRecipeComponent {
   username: string | null;
   formData: any;
   ingredientsArray: any;
-  ingeredientsData: any;
+  ingredientsData: any;
   tipsData: any;
   instructionsData: any;
   existingRecipes: any;
@@ -172,21 +172,12 @@ export class ManageRecipeComponent {
     (this.tipsForm.get('tips') as FormArray).removeAt(index);
   }
 
-  /**** Form Submission */
-  patchNestedArrays() {
-    this.recipeDetailsForm.value.ingredients.push(this.ingredientsForm.value);
-    this.recipeDetailsForm.value.instructions.push(this.instructionsForm.value);
-    this.recipeDetailsForm.value.tips.push(this.tipsForm.value);
-    this.recipeDetailsForm.value.totalTime = this.recipeDetailsForm.value.prepTime + this.recipeDetailsForm.value.cookTime;
-
-  }
-
 
 
   /**** Populate forms with the recieved data */
   populateFormsWithData(): void {
-    if (this.ingeredientsData && this.ingeredientsData.length > 0) {
-      this.ingeredientsData.forEach((ingredientObject: any) => {
+    if (this.ingredientsData && this.ingredientsData.length > 0) {
+      this.ingredientsData.forEach((ingredientObject: any) => {
         this.ingredientControls.push(this.fb.control(ingredientObject, Validators.required));
       });
     }
@@ -291,8 +282,12 @@ export class ManageRecipeComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
-          this.router.navigate(['/home']);
+          if (res.statusCode == 200) {
+            this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
+            this.router.navigate(['/home']);
+          } else {
+            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
+          }
         },
         error: (err) => {
           this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
@@ -301,7 +296,7 @@ export class ManageRecipeComponent {
       })
   }
 
-  onSearchRecipe(id: number): [] {
+  onSearchRecipe(id: number): Recipe[] {
     const params = new HttpParams()
       .set("id", id)
     this.recipeManService
@@ -309,14 +304,12 @@ export class ManageRecipeComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          console.log("RESPONSE", res);
-
+          console.log("ResSearch", res);
+          
           if (res.statusCode == 200) {
             this.formData = res.entity;
             this.currentId = res.entity.id;
-
             this.pageFunction = 'Update'
-
 
             //Initialize recipe Details form with data 
             this.recipeDetailsForm = this.fb.group({
@@ -329,15 +322,13 @@ export class ManageRecipeComponent {
               time: [this.formData.time, [Validators.required]],
             });
 
-
             //Call the data for the nested arrays of the recipeDetails Form
-            this.ingeredientsData = this.formData.ingredients
+            this.ingredientsData = this.formData.ingredients
             this.tipsData = this.formData.tips;
             this.instructionsData = this.formData.instructions;
             this.populateFormsWithData();
 
           } else {
-            console.log("Not 200");
             this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger")
           }
         },

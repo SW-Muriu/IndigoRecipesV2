@@ -26,12 +26,7 @@ describe('SigninComponent', () => {
     authManServiceMock = {
       logInUser: jest.fn().mockReturnValue(of({ statusCode: 200, entity: {}, message: "" })),
     }
-
-    //Router Mock
-    // routerMock = {
-    //   navigate: jest.fn(),
-    // }
-
+    
     //Mock Snackbar
     notificationManMock = {
       showNotificationMessage: jest.fn().mockReturnValue(of("Successful message", "snackbar-success")),
