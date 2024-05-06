@@ -4,6 +4,10 @@ import { HeaderComponent } from '../../../architecture/layout/header/header.comp
 import { MatIconButton } from '@angular/material/button';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FooterComponent } from '../../../architecture/layout/footer/footer.component';
+import { NotificationService } from '../../../architecture/services/notification/notification.service';
+import { AuthService } from '../../services/authservices/auth.service';
+import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface UserMenuItem {
   label: string;
@@ -15,9 +19,9 @@ export interface UserMenuItem {
   standalone: true,
   imports: [
     SharedModule,
-    HeaderComponent, 
+    HeaderComponent,
     FooterComponent,
-    
+
   ],
   templateUrl: './profile-management.component.html',
   styleUrl: './profile-management.component.scss'
@@ -25,9 +29,13 @@ export interface UserMenuItem {
 export class ProfileManagementComponent {
 
   profileForm: FormGroup
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
+    private notificationManService: NotificationService,
+    private authManService: AuthService,
+    private router: Router,
   ) {
     this.profileForm = this.fb.group({
       firstName: [sessionStorage.getItem('firstName'), [Validators.required]],
@@ -39,6 +47,26 @@ export class ProfileManagementComponent {
     });
   }
 
- 
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
 
+  handleProfileUpdate(): void {
+    this.authManService
+      .updateUser(this.profileForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          (res.statusCode == 200) ? this.notificationManService.showNotificationMessage(res.message, "snackbar-success") :
+            this.notificationManService.showNotificationMessage(res.message, "snackbar-danger");
+        }, 
+        error: () => {
+          this.notificationManService.showNotificationMessage("Server Error!!", "snackbar-danger");
+        }, 
+        complete: () => {
+          this.router.navigate(['/home']);
+        }
+      })
+  }
 }

@@ -31,4 +31,10 @@ export class AuthService {
     const logoutUrl = `${this.serverUrl}/logout`;
     return this._http.put<any>(logoutUrl, {});
   }
+
+  //update User Profile 
+  updateUser(userDetails: User): Observable<any>{
+    const updateUrl = `${this.serverUrl}/update`;
+    return this._http.put<any>(updateUrl, { body: userDetails });
+  }
 }

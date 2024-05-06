@@ -33,8 +33,10 @@
                                             <div>
                                                 <ng-container>
                                                     <mat-form-field class="width" appearance="outline">
-                                                        <textarea matInput formControlName="description" placeholder="Recipe Description" required></textarea>
-                                                        <mat-error *ngIf="recipeDetailsForm.get('description')?.hasError('required')">The
+                                                        <textarea matInput formControlName="description"
+                                                            placeholder="Recipe Description" required></textarea>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('description')?.hasError('required')">The
                                                             description is required </mat-error>
                                                     </mat-form-field>
                                                 </ng-container>
@@ -216,6 +218,7 @@
                                 <div class="padding">
                                     <p>Review your recipe details and submit.</p>
                                     <button type="submit" mat-button (click)="onSubmit()">Submit</button>
+                                    <button type="submit" mat-button (click)="onCancel()">Cancel</button>
                                 </div>
                             </mat-step>
                         </div>

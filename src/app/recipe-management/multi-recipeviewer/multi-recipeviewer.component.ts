@@ -35,13 +35,14 @@ export class MultiRecipeviewerComponent {
     private snackbarManService: NotificationService,
   ) {
     // this.recipes = this.recipeManService.sampledRecipes;
+    this.recipeManService.shouldDeferContent = true;
+   
   }
 
   ngOnInit(): void {
-    this.recipeManService.shouldDeferContent = true;
-    this.getAllRecipes();
-    this.getMyRecipes();
-    this.getSavedRecipes();
+    // this.getAllRecipes();
+    // this.getMyRecipes();
+    // this.getSavedRecipes(); 
   }
 
 
@@ -64,17 +65,15 @@ export class MultiRecipeviewerComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          if (res.statusCode == 200) {
-            this.recipes = res.entity;
-          } else {
+          (res.statusCode == 200) ?
+            this.recipes = res.entity :
             this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
-          }
         },
         error: (err) => {
           this.snackbarManService.showNotificationMessage("server-error!!", "snackbar-danger");
         },
         complete: () => { }
-      })
+      });
   }
 
   //Fetch My Recipes
@@ -119,8 +118,6 @@ export class MultiRecipeviewerComponent {
 
   //Onsearch
   onSearch(searchValue: string) {
-    console.log("SEARCHING");
-    
     this.myRecipes = this.searchThroughRecipes(this.myRecipes, searchValue);
     this.favRecipes = this.searchThroughRecipes(this.favRecipes, searchValue);
     this.recipes = this.searchThroughRecipes(this.recipes, searchValue);
@@ -139,6 +136,7 @@ export class MultiRecipeviewerComponent {
       })
     }
   }
+
 
   //clear search 
   onClearSearch($event: string): void {

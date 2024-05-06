@@ -10,7 +10,7 @@
                         <div class="search-container">
                             <form [formGroup]="mngForm">
 
-                                <textarea class="search-input" placeholder="Search" required></textarea>
+                                <textarea class="search-input" placeholder="Kindly input your review" required></textarea>
                                 <mat-error *ngIf="(mngForm.get('response')?.dirty || mngForm.get('response')?.touched)">
                                     Response is required
                                 </mat-error>

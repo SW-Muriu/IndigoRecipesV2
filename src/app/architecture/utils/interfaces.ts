@@ -64,7 +64,7 @@ export let sampledRecipes: Recipe[] = [
         time: "Breakfast",
         imageUrl: './../../../assets/political.png',
         // imageUrl: "https://via.placeholder.com/300", 
-        place: "African",
+        place: "Tetu",
         ingredients: [
             "2 boneless, skinless chicken breasts",
             "1 tablespoon olive oil",
@@ -102,7 +102,7 @@ export let sampledRecipes: Recipe[] = [
         cookTime: 30,
         totalTime: 50,
         id: 0,
-        time: "Breakfast",
+        time: "Brunches",
         imageUrl: './../../../assets/political.png',
         // imageUrl: "https://via.placeholder.com/300", 
         place: "African",
@@ -135,7 +135,7 @@ export let sampledRecipes: Recipe[] = [
         owner: 'junior',
         isFavourited: true,
     }, {
-        title: 'Ugali Mayai',
+        title: 'Ugali Matumbo',
         yield: 4,
         rating: 4,
         prepTime: 20,

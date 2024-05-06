@@ -339,6 +339,10 @@ export class ManageRecipeComponent {
     return this.formData;
   }
 
+  onCancel(): void {
+    this.router.navigate(['/home']);
+  }
+
 }
 
 

@@ -27,7 +27,7 @@
                                 <p><strong>Email</strong></p>
                             </div>
                             <mat-form-field appearance="outline" [ngStyle]="{ width: '100%'}">
-                                <input placeholder="e.g. your@email.com" matInput formControlName="email" />
+                                <input placeholder="e.g. your@email.com" matInput formControlName="email" readonly />
                                 <mat-error *ngIf="profileForm.get('email')?.hasError('required')">The
                                     Email is required</mat-error>
                             </mat-form-field>
@@ -74,7 +74,7 @@
 
             </mat-card-content>
             <mat-card-actions align="end">
-                <button mat-raised-button color="primary"> SAVE CHANGES</button>
+                <button mat-raised-button color="primary" (click)="handleProfileUpdate()"> SAVE CHANGES</button>
             </mat-card-actions>
         </mat-card>
     </div>

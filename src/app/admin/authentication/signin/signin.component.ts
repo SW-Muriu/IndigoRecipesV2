@@ -74,4 +74,8 @@ export class SigninComponent implements OnDestroy {
       })
   }
 
+  handleForgotPassword(): void{
+    this.snackbarManService.showNotificationMessage("A login link has been forwarded to your email account", "snackbar-success")
+  }
+
 }
