@@ -40,9 +40,9 @@ export class MultiRecipeviewerComponent {
   }
 
   ngOnInit(): void {
-    // this.getAllRecipes();
-    // this.getMyRecipes();
-    // this.getSavedRecipes(); 
+    this.getAllRecipes();
+    this.getMyRecipes();
+    this.getSavedRecipes(); 
   }
 
 

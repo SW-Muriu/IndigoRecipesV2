@@ -24,7 +24,6 @@ export class RecipeHolderComponent {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
   @Input() recipes: Recipe[] | null = null;
-  //   title: 'Ugali Mayai',
   //   yield: 4,
   //   rating: 4,
   //   prepTime: 20,
@@ -103,13 +102,8 @@ export class RecipeHolderComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          switch (res.statusCode) {
-            case (res.statusCode == 200):
-              this.snackbar.showNotificationMessage(res.message, "snackbar-success");
-              break;
-            default:
-              this.snackbar.showNotificationMessage(res.message, "snackbar-danger");
-          }
+          (res.statusCode == 200) ? this.snackbar.showNotificationMessage(res.message, "snackbar-success") :
+            this.snackbar.showNotificationMessage(res.message, "snackbar-danger");
         },
         error: (err) => {
           this.snackbar.showNotificationMessage("Server Error", "snackbar-danger");
