@@ -54,8 +54,7 @@ export class MultiRecipeviewerComponent {
 
   //Add Recipe
   addRecipe(): void {
-    let route = `manage/recipe`;
-    this.router.navigate([route]);
+    this.router.navigate([`manage/recipe`]);
   }
 
   //Fetch All Recipes
