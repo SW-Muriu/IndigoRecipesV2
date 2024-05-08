@@ -6,11 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecipeService } from '../services/recipe.service';
 import { NotificationService } from '../../architecture/services/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of, throwError } from 'rxjs';
-import { Expansion } from '@angular/compiler';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, of } from 'rxjs';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Recipe } from '../../architecture/utils/interfaces';
-import { HttpParams, HttpStatusCode } from '@angular/common/http';
 
 describe('ManageRecipeComponent', () => {
   let component: ManageRecipeComponent;
@@ -20,7 +18,6 @@ describe('ManageRecipeComponent', () => {
   let routerMock: Router;
   // let routeMock: ActivatedRoute;
   let fb: FormBuilder;
-  let spyInstance: jest.SpyInstance;
   let mockActivatedRoute: any;
 
   let mockRecipe: Recipe = {
@@ -30,6 +27,7 @@ describe('ManageRecipeComponent', () => {
     prepTime: 20,
     cookTime: 30,
     totalTime: 50,
+    description: '',
     id: 1,
     time: "Breakfast",
     imageUrl: './../../../assets/political.png',
@@ -65,51 +63,6 @@ describe('ManageRecipeComponent', () => {
     isFavourited: true,
   };
 
-  let mockApiResponse = {
-    statusCode: 200, 
-    message: "Recipe Found", 
-    entity: {
-      title: 'Ugali Mayai',
-      yield: 4,
-      rating: 4,
-      prepTime: 20,
-      cookTime: 30,
-      totalTime: 50,
-      id: 1,
-      time: "Breakfast",
-      imageUrl: './../../../assets/political.png',
-      // imageUrl: "https://via.placeholder.com/300", 
-      place: "African",
-      ingredients: [
-        "2 boneless, skinless chicken breasts",
-        "1 tablespoon olive oil",
-        "1 teaspoon dried oregano",
-        "1/2 teaspoon garlic powder",
-        "1/4 teaspoon salt",
-        "1/4 teaspoon black pepper",
-        "1 bunch asparagus, trimmed",
-        "1 lemon, sliced",
-      ],
-      instructions: [
-        "Preheat oven to 400°F (200°C). Lightly grease a baking sheet.",
-        "In a bowl, toss chicken breasts with olive oil, oregano, garlic powder, salt, and pepper.",
-        "Arrange chicken breasts on the prepared baking sheet. Scatter asparagus spears around the chicken.",
-        "Top with lemon slices.",
-        "Bake for 25 minutes, or until chicken is cooked through and asparagus is tender-crisp",
-      ],
-      tips: [
-        "For added flavor, marinate the chicken in the olive oil mixture for 30 minutes before baking.",
-        "You can substitute other vegetables for the asparagus, such as broccoli florets or bell peppers.",
-        "Serve with rice or quinoa for a complete meal.",
-      ],
-      comments: [{
-        sender: 'samsicker',
-        text: 'This recipe was delicious! I loved the flavor combinations.'
-      }],
-      owner: 'junior',
-      isFavourited: true,
-    }
-  }
 
   let successfulResponse = {
     statusCode: 200,

@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { Subject, takeUntil } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import { Location } from '@angular/common';
+
 import { NotificationService } from '../../architecture/services/notification/notification.service';
 import Swal from 'sweetalert2';
 
@@ -44,27 +46,25 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
       text: "My Name"
     }
   ];
+  hideEditDelete: boolean = false;
 
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
+    private location: Location,
     private recipeManService: RecipeService,
     private route: ActivatedRoute,
     private snackbarManService: NotificationService
   ) {
     this.username = sessionStorage.getItem('username');
-   }
+  }
 
 
   ngOnInit(): void {
     if (this.route.queryParams) {
       this.route.queryParams.subscribe({
         next: (params) => {
-          if (params.hasOwnProperty('id')) {
-            const recipeId = params['id'];
-            this.searchRecipeById(recipeId);
-          }
+          if (params.hasOwnProperty('id')) this.recipe = this.searchRecipeById(params['id']);
         }
       })
     }
@@ -120,7 +120,7 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
 
 
   //Fetch recipe by ID
-  searchRecipeById(id: number): void {
+  searchRecipeById(id: number): Recipe {
     const params = new HttpParams()
       .set("id", id);
     this.recipeManService
@@ -128,13 +128,11 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          console.log(res);
-          
-          if (res.statusCode == 200) {
-            this.recipe = res.entity;
-          }
+          if (res.statusCode == 200) this.recipe = res.entity;
+          (this.recipe.owner == this.username) ? this.hideEditDelete = false : this.hideEditDelete = true;
         }
-      })
+      });
+    return this.recipe;
   }
 
   saveClicked(id: number): void {
@@ -145,18 +143,10 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          switch (res.statusCode) {
-            case (res.statusCode == 200):
-              this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
-              break;
-            default:
-              this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
-          }
+          //Change later to map the users****
+          (res.statusCode == 200) ? this.snackbarManService.showNotificationMessage(res.message, "snackbar-success") :
+            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
         },
-        error: (err) => {
-          this.snackbarManService.showNotificationMessage("Server Error", "snackbar-danger");
-        },
-        complete: () => { },
       })
 
   }
@@ -167,34 +157,27 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
 
   //Edit
   editClicked(id: number) {
-    const serializedData = JSON.stringify(id);
-    let route = 'manage/recipe';
+    let route = '/manage/recipe';
     this.router.navigate([route], {
       queryParams: {
-        data: serializedData
+        data: JSON.stringify(id)
       }
     })
   }
 
   deleteClicked(recipe: any): void {
-    console.log(recipe);
-    
     this.recipeManService.deleteRecipe(recipe).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
-        switch (res.statusCode) {
-          case (res.statusCode == 200):
-            this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
-            this.router.navigate([`/recipes/viewer`])
-            break;
-          default:
-            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
+        if (res.statusCode == 200) {
+          this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
+          this.router.navigate([`/recipes/viewer`]);
+        } else {
+          this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
         }
       },
-      error: (err) => {
-        this.snackbarManService.showNotificationMessage("Server Error", "snackbar-danger");
+      complete: () => {
       },
-      complete: () => { },
-   })
+    })
   }
 
   shareClicked(title: string): void {
@@ -212,14 +195,11 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.snackbarManService.showNotificationMessage("Recipe shared successfully", 'snackbar-success');
-        console.log('Shared on Facebook');
+        this.snackbarManService.showNotificationMessage("Recipe shared successfully on Facebook", 'snackbar-success');
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        this.snackbarManService.showNotificationMessage("Recipe shared successfully", 'snackbar-success');
-        console.log('Shared on WhatsApp');
+        this.snackbarManService.showNotificationMessage("Recipe shared successfully on WhatsApp", 'snackbar-success');
       } else {
-        this.snackbarManService.showNotificationMessage("Recipe shared successfully", 'snackbar-success');
-        console.log('Shared via Email');
+        this.snackbarManService.showNotificationMessage("Recipe shared successfully via Email", 'snackbar-success');
       }
     });
   }
@@ -228,28 +208,25 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
     if (this.newComment.trim() !== '') {
       this.recipe.comments.unshift({ sender: `${this.username}`, text: this.newComment });
       this.newComment = '';
-
+      
       this.recipeManService
         .updateRecipe(this.recipe)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (res) => {
-            if (res.statusCode == 200) {
-              this.snackbarManService.showNotificationMessage("Recipe Reviewed Successfully!!", "snackbar-success");
-            }
-            this.snackbarManService.showNotificationMessage("There was a problem reviewing the recipe!!", "snackbar-danger");
-          }, 
+            (res.statusCode == 200) ? this.snackbarManService.showNotificationMessage("Recipe Reviewed Successfully!!", "snackbar-success") :
+              this.snackbarManService.showNotificationMessage("There was a problem reviewing the recipe!!", "snackbar-danger");
+          },
           error: (err) => {
             this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
           }
-      })
-
+        })
     }
   }
 
   navigateBackHome(): void {
-    let route = `/home`;
-    this.router.navigate([route]);
+    this.location.back();
 
   }
 }
+

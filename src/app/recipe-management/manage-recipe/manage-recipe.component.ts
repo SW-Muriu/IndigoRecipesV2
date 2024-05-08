@@ -39,6 +39,7 @@ export class ManageRecipeComponent {
   instructionsData: any;
   existingRecipes: any;
   destroy$: Subject<any> = new Subject<boolean>();
+  shouldDeferContent: boolean = false;
 
   placeOptions: Option[] = [
     { value: 'chinese', label: 'Chinese' },
@@ -86,8 +87,6 @@ export class ManageRecipeComponent {
    */
   ngOnInit(): void {
     this.initEmptyRecipeDetailsForm();
-
-
     if (!this.route.queryParams) this.pageFunction = 'Add';
     this.route.queryParams.subscribe({
       next: (params) => {

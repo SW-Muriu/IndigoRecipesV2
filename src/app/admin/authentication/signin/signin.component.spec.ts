@@ -13,24 +13,12 @@ import { HttpParams } from '@angular/common/http';
 describe('SigninComponent', () => {
   let component: SigninComponent
   let fixture: ComponentFixture<SigninComponent>;
-  let fb: FormBuilder;
-  let notificationManMock: any;
-  let authManServiceMock: any;
-  let serviceInstance: AuthService;
+  let notificationManMock: NotificationService;
+  let authManServiceMock: AuthService;
   let routerMock: Router
   let spyInstance: jest.SpyInstance;
-  let routerSpyInstance: jest.SpyInstance;
 
   beforeEach(async () => {
-
-    authManServiceMock = {
-      logInUser: jest.fn().mockReturnValue(of({ statusCode: 200, entity: {}, message: "" })),
-    }
-    
-    //Mock Snackbar
-    notificationManMock = {
-      showNotificationMessage: jest.fn().mockReturnValue(of("Successful message", "snackbar-success")),
-    }
 
     await TestBed.configureTestingModule({
       imports: [
@@ -40,19 +28,37 @@ describe('SigninComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: NotificationService, useValue: notificationManMock },
-        // { provide: AuthService, useValue: {} },
-        { provide: Router, useValue: {} }
+        {
+          provide: NotificationService, useValue: {
+            showNotificationMessage: jest.fn()
+          }
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate: jest.fn()
+          }
+        },
+        {
+          provide: AuthService,
+          useValue: {
+            registerUser: jest.fn(),
+            logInUser: jest.fn(),
+            logOutUser: jest.fn(),
+            updateUser: jest.fn(),
+          }
+        }
       ]
     })
       .compileComponents();
 
 
     fixture = TestBed.createComponent(SigninComponent);
+    routerMock = TestBed.inject(Router);
+    notificationManMock = TestBed.inject(NotificationService);
+    authManServiceMock = TestBed.inject(AuthService);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    serviceInstance = TestBed.inject(AuthService);
   });
 
   it('should create', () => {
@@ -81,17 +87,16 @@ describe('SigninComponent', () => {
     });
 
 
-    spyInstance = jest.spyOn(serviceInstance, 'logInUser').mockReturnValue(of({ statusCode: 200, entity: {}, message: "Success" }));
+    spyInstance = jest.spyOn(authManServiceMock, 'logInUser').mockReturnValue(of({ statusCode: 200, entity: {}, message: "Success" }));
     component.onLogin();
     const params = new HttpParams()
       .set("userNameorEmail", component.signInForm.value.userNameOrEmail)
-    serviceInstance.logInUser(component.signInForm.value, params);
+    authManServiceMock.logInUser(component.signInForm.value, params);
 
     expect(spyInstance).toHaveBeenCalled();
     expect(spyInstance).toHaveBeenCalledWith(component.signInForm.value, params);
-
-
   })
+
 
   it('should call login service with correct params and on successufll login', () => {
     component.signInForm.setValue({
@@ -105,8 +110,10 @@ describe('SigninComponent', () => {
       entity: { userName: 'test_user', firstName: 'John', lastName: 'Doe', email: 'test@example.com' },
     };
 
+
+
     //Mock Authservice.loginuser to return successful response = {
-    spyInstance = jest.spyOn(serviceInstance, 'logInUser').mockReturnValue(of(loginResponse));
+    spyInstance = jest.spyOn(authManServiceMock, 'logInUser').mockReturnValue(of(loginResponse));
 
     //Trigger the login method
     component.onLogin();
@@ -125,12 +132,26 @@ describe('SigninComponent', () => {
     expect(sessionStorage.getItem('firstName')).toBe('John');
     expect(sessionStorage.getItem('lastName')).toBe('Doe');
     expect(sessionStorage.getItem('email')).toBe('test@example.com');
-    // expect(routerSpyInstance).toHaveBeenCalledWith(['/home']);
-    // Assert snackbar message
-    // expect(notificationManMock).toHaveBeenCalledWith();
+    expect(routerMock.navigate).toHaveBeenCalledWith([`/home`]);
+    expect(notificationManMock.showNotificationMessage).toHaveBeenLastCalledWith(loginResponse.message, "login-snackbar");
   });
 
-  
+
+  it('should throw an error on errorResponse', () => {
+    const loginUser$ = authManServiceMock.logInUser as jest.Mock;
+    const errorResponse = {
+      statusCode: 400,
+      message: 'Invalid username or password',
+    };
+    loginUser$.mockReturnValue(of(errorResponse))
+
+
+    component.onLogin();
+    //Mock Authservice.loginuser to return error response
+    expect(notificationManMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "login-snackbar");
+
+  });
+
 })
 
 

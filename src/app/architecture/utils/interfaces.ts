@@ -21,6 +21,7 @@ export interface Recipe {
     title: string;
     id: number;
     yield: number;
+    description: string,
     // recipeCode: string;
     time: string;
     prepTime: number;
@@ -52,12 +53,57 @@ export let  sampledReviews: { sender: string, message: string } [] = [
     { sender: "Chef Fab", message: "Indigo Recipes makes staying fit deliciously easy! Nutritious, flavorful dishes with helpful nutritional info. A must for health-conscious cooks!" }
 ]
 
+
+export let singleSampleRecipe = {
+    title: 'Ugali Mayai',
+    yield: 4,
+    rating: 4,
+    prepTime: 20,
+    description: '',
+    cookTime: 30,
+    totalTime: 50,
+    id: 1,
+    time: "Breakfast",
+    imageUrl: './../../../assets/political.png',
+    // imageUrl: "https://via.placeholder.com/300", 
+    place: "Tetu",
+    ingredients: [
+        "2 boneless, skinless chicken breasts",
+        "1 tablespoon olive oil",
+        "1 teaspoon dried oregano",
+        "1/2 teaspoon garlic powder",
+        "1/4 teaspoon salt",
+        "1/4 teaspoon black pepper",
+        "1 bunch asparagus, trimmed",
+        "1 lemon, sliced",
+    ],
+    instructions: [
+        "Preheat oven to 400°F (200°C). Lightly grease a baking sheet.",
+        "In a bowl, toss chicken breasts with olive oil, oregano, garlic powder, salt, and pepper.",
+        "Arrange chicken breasts on the prepared baking sheet. Scatter asparagus spears around the chicken.",
+        "Top with lemon slices.",
+        "Bake for 25 minutes, or until chicken is cooked through and asparagus is tender-crisp",
+    ],
+    tips: [
+        "For added flavor, marinate the chicken in the olive oil mixture for 30 minutes before baking.",
+        "You can substitute other vegetables for the asparagus, such as broccoli florets or bell peppers.",
+        "Serve with rice or quinoa for a complete meal.",
+    ],
+    comments: [{
+        sender: 'samsicker',
+        text: 'This recipe was delicious! I loved the flavor combinations.'
+    }],
+    owner: 'junior',
+    isFavourited: true,
+};
+
 export let sampledRecipes: Recipe[] = [
     {
         title: 'Ugali Mayai',
         yield: 4,
         rating: 4,
         prepTime: 20,
+        description: '',
         cookTime: 30,
         totalTime: 50,
         id: 0,
@@ -99,6 +145,7 @@ export let sampledRecipes: Recipe[] = [
         yield: 4,
         rating: 4,
         prepTime: 20,
+        description: '',
         cookTime: 30,
         totalTime: 50,
         id: 0,
@@ -138,6 +185,7 @@ export let sampledRecipes: Recipe[] = [
         title: 'Ugali Matumbo',
         yield: 4,
         rating: 4,
+        description: '',
         prepTime: 20,
         cookTime: 30,
         totalTime: 50,
@@ -179,6 +227,7 @@ export let sampledRecipes: Recipe[] = [
         yield: 4,
         rating: 4,
         prepTime: 20,
+        description: '',
         cookTime: 30,
         totalTime: 50,
         id: 0,

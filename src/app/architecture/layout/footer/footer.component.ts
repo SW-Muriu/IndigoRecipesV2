@@ -21,16 +21,12 @@ export class FooterComponent {
     private notificationManService: NotificationService,
   ) {
     this.mngForm = this.fb.group({
-      response: ['', [Validators.required, Validators.maxLength(3000)]],
+      response: [null, [Validators.required, Validators.maxLength(3000)]],
     })
   }
 
   onSendEmail(): void {
-    if (this.mngForm.value.response != null) {
       const username = sessionStorage.getItem("username");
       this.notificationManService.showNotificationMessage(`Thank you ${username} for your feedback`, 'snackbar-success');
-    } else {
-      this.notificationManService.showNotificationMessage(`Kindly fill the form`, 'snackbar-success');
-    }
   }
 }

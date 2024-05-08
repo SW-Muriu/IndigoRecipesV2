@@ -10,12 +10,11 @@
                         <div class="search-container">
                             <form [formGroup]="mngForm">
 
-                                <textarea class="search-input" placeholder="Kindly input your review" required></textarea>
-                                <mat-error *ngIf="(mngForm.get('response')?.dirty || mngForm.get('response')?.touched)">
-                                    Response is required
-                                </mat-error>
+                                <textarea matINput formControlName="response" class="search-input" placeholder="Kindly input your review" required></textarea>
+                               
                             </form>
-                            <button mat-button-raised class="search-button" (click)="onSendEmail()">
+                        
+                            <button [disabled]="!mngForm.valid" mat-button-raised class="search-button" (click)="onSendEmail()">
                                 <i class="fas fa-search"></i>Send Email </button>
                         </div>
                     </div>

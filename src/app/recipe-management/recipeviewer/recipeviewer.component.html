@@ -2,27 +2,27 @@
 <main class="container">
     <section class="content-below-header">
         <h2>
-            <Strong>{{recipe.title}}</Strong>
+            <Strong>{{recipe?.title}}</Strong>
         </h2>
         <div class="rating">
-            <mat-icon *ngFor="let star of stars" [class.active]="star <= recipe.rating">star</mat-icon> <strong>||
-                {{recipe.comments.length}}
+            <mat-icon *ngFor="let star of stars" [class.active]="star <= recipe?.rating">star</mat-icon> <strong>||
+                {{recipe?.comments?.length}}
                 Review(s)</strong>
         </div>
         <p>
-            {{recipe.description}}
+            {{recipe?.description}}
         </p>
         <p>
-            {{recipe.place}} || {{recipe.time}}
+            {{recipe?.place}} || {{recipe?.time}}
         </p>
-        Submitted by<strong> {{recipe.owner}}</strong>
+        Submitted by<strong> {{recipe?.owner}}</strong>
 
         <br>
 
         <div class="button-group">
             <button mat-button (click)="saveClicked(recipe.id)" class="button">
                 Save
-                @if(recipe.isFavourited){
+                @if(recipe?.isFavourited){
                 <mat-icon>favorite</mat-icon>
                 }
                 @else {
@@ -44,34 +44,34 @@
         </div>
         <br>
         <div>
-            <img class="image-box" [src]="recipe.imageUrl" alt="Testrecipe">
+            <img class="image-box" [src]="recipe?.imageUrl" alt="Testrecipe">
         </div>
         <br>
-      
+
         <br>
         <div class="timebox">
             <div class="item">
                 <strong><span>Prep Time:</span></strong>
-                <p><span>{{recipe.prepTime}} minutes</span></p>
+                <p><span>{{recipe?.prepTime}} minutes</span></p>
             </div>
             <div class="item">
                 <strong><span>Cook Time:</span></strong>
-                <p><span>{{recipe.cookTime}} minutes</span></p>
+                <p><span>{{recipe?.cookTime}} minutes</span></p>
             </div>
             <div class="item">
                 <strong><span>Total Time:</span></strong>
-                <p><span>{{recipe.totalTime}} minutes</span></p>
+                <p><span>{{recipe?.totalTime}} minutes</span></p>
             </div>
             <div class="item">
                 <strong><span>Yield:</span></strong>
-                <p><span>{{recipe.yield}} servings</span></p>
+                <p><span>{{recipe?.yield}} servings</span></p>
             </div>
         </div>
         <br>
         <!-- Listing Ingredients -->
         <h3><strong>Ingredients</strong></h3>
         <ul>
-            @for(ingredient of recipe.ingredients; track ingredient){
+            @for(ingredient of recipe?.ingredients; track ingredient){
             <li> {{ ingredient }}</li>
             }
             @empty {
@@ -82,7 +82,7 @@
         <!-- Instructions -->
         <h3><strong>Instructions</strong></h3>
         <ul>
-            @for(instruction of recipe.instructions; track instruction){
+            @for(instruction of recipe?.instructions; track instruction){
             <li> {{ instruction }}</li>
             }
             @empty {
@@ -93,7 +93,7 @@
         <!-- Tips -->
         <h3><strong>Tips</strong></h3>
         <ul>
-            @for(tip of recipe.tips; track tip){
+            @for(tip of recipe?.tips; track tip){
             <li> {{ tip }}</li>
             }
             @empty {
@@ -102,6 +102,7 @@
         </ul>
 
         <br>
+        @if(hideEditDelete) {
         <div class="button-group">
             <button mat-button (click)="editClicked(recipe.id)" class="button">
                 Edit
@@ -113,6 +114,8 @@
                 Delete
             </button>
         </div>
+        }
+
         <br>
 
         <!-- Review Section -->
@@ -127,13 +130,13 @@
                 </div>
                 <hr>
                 <div class="message-container">
-                    @for(comment of recipe.comments; track comment.sender){
+                    @for(comment of recipe?.comments; track comment?.sender){
                     <div class="comment">
                         <div class="comment-header">
-                            {{comment.sender}}
+                            {{comment?.sender}}
                         </div>
                         <div class="comment-body">
-                            {{comment.text}}
+                            {{comment?.text}}
                         </div>
                     </div>
                     }
@@ -145,9 +148,9 @@
         </div>
         <br>
         <!-- Back Home Button -->
-        <div >
-            <button class="width" mat-raised-button color="primary"  (click)="navigateBackHome()" >Navigate Back
-                Home</button>
+        <div>
+            <button class="width" mat-raised-button color="primary" (click)="navigateBackHome()">Navigate Back
+            </button>
         </div>
 
     </section>

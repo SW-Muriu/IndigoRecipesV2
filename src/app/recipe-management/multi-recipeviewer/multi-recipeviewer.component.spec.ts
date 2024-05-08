@@ -70,6 +70,7 @@ describe('MultiRecipeviewerComponent', () => {
   });
 
 
+  
   it('should call ngOnInit', () => {
     const jestSpy = jest.spyOn(component, "ngOnInit");
     recipeManServiceMock.shouldDeferContent = true;
