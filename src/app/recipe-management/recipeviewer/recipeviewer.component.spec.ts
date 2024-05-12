@@ -9,6 +9,7 @@ import { NotificationService } from '../../architecture/services/notification/no
 import { BehaviorSubject, of } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { singleSampleRecipe } from '../../architecture/utils/interfaces';
+import Swal from 'sweetalert2';
 
 describe('RecipeviewerComponent', () => {
   let component: RecipeviewerComponent;
@@ -211,5 +212,34 @@ describe('RecipeviewerComponent', () => {
     expect(deleteRecipe$).toHaveBeenCalledWith(recipe);
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
     expect(routerMock.navigate).toHaveBeenCalledTimes(0) //Dont Navigate if there is an update error back on complete
+  }); 
+
+
+  xdescribe('testing shareClicked',()=> {
+    const title = `Test Recipe`;
+    let swalFireSpy = jest.spyOn(Swal, 'fire');
+
+    xit('should call Shareclicked with correct properties for Swal Spy', () => {
+      
+      
+      component.shareClicked(title);
+
+      expect(swalFireSpy).toHaveBeenCalledWith({
+        title: 'Share via',
+        showCancelButton: true,
+        confirmButtonText: 'Facebook',
+        cancelButtonText: 'WhatsApp',
+        showCloseButton: true,
+        html: `You can also <a href="mailto:?subject=Check out this article&amp;body=${encodeURIComponent(`https://example.com/share?title=${title}`)}">Email</a> it.`,
+        reverseButtons: true,
+      });
+
+      // xit('should show Facebook share success message on confirm in shareClicked', () => {
+      //   swalFireSpy.mockReturnValue(Promise.resolve({ isConfirmed: true }))
+      //   component.shareClicked(title);
+      //   expect(swalFireSpy).toHaveBeenCalled();
+      //   expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith('Recipe shared successfully on Facebook', 'snackbar-success');
+      // })
+    }) }); 
+
   })
-})

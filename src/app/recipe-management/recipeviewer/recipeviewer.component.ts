@@ -129,7 +129,7 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           if (res.statusCode == 200) this.recipe = res.entity;
-          (this.recipe.owner == this.username) ? this.hideEditDelete = false : this.hideEditDelete = true;
+          (this.recipe.owner == this.username) ? this.hideEditDelete = true : this.hideEditDelete = false;
         }
       });
     return this.recipe;
@@ -226,7 +226,6 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
 
   navigateBackHome(): void {
     this.location.back();
-
   }
 }
 

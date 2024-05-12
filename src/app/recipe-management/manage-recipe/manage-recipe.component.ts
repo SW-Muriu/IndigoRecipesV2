@@ -224,6 +224,7 @@ export class ManageRecipeComponent {
 
 
     const UpdatePayload: any = {
+      owner: this.username,
       title: this.recipeDetailsForm.value.title,
       description: this.recipeDetailsForm.value.description,
       yield: this.recipeDetailsForm.value.yield,

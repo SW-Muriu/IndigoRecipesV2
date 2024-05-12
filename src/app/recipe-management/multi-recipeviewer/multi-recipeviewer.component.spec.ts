@@ -61,10 +61,10 @@ describe('MultiRecipeviewerComponent', () => {
     snackbarMock = TestBed.inject(NotificationService);
    
     fixture = TestBed.createComponent(MultiRecipeviewerComponent);
-    // component = fixture.componentInstance;
-    // // (recipeManServiceMock.fetchAllRecipes as jest.Mock).mockReturnValue(of(null));
-    // // (recipeManServiceMock.fetchFavRecipes as jest.Mock).mockReturnValue(of(null));
-    // // (recipeManServiceMock.fetchMyRecipes as jest.Mock).mockReturnValue(of(null));
+    component = fixture.componentInstance;
+    (recipeManServiceMock.fetchAllRecipes as jest.Mock).mockReturnValue(of(null));
+    (recipeManServiceMock.fetchFavRecipes as jest.Mock).mockReturnValue(of(null));
+    (recipeManServiceMock.fetchMyRecipes as jest.Mock).mockReturnValue(of(null));
     fixture.detectChanges();
 
   });

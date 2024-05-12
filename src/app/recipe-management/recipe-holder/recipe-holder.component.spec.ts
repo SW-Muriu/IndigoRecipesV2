@@ -112,8 +112,6 @@ describe('RecipeHolderComponent', () => {
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
   }); 
 
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
+
 
 });
