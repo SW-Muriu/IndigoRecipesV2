@@ -1,13 +1,7 @@
 import { Routes } from '@angular/router';
 import { SigninComponent } from './admin/authentication/signin/signin.component';
-import { ProfileManagementComponent } from './admin/authentication/profile-management/profile-management.component';
 import { SignupComponent } from './admin/authentication/signup/signup.component';
-import { ManageRecipeComponent } from './recipe-management/manage-recipe/manage-recipe.component';
-import { RecipeHolderComponent } from './recipe-management/recipe-holder/recipe-holder.component';
-import { RecipeviewerComponent } from './recipe-management/recipeviewer/recipeviewer.component';
 import { HomePageComponent } from './architecture/layout/home-page/home-page.component';
-import { combineLatest } from 'rxjs';
-import { MultiRecipeviewerComponent } from './recipe-management/multi-recipeviewer/multi-recipeviewer.component';
 import { authenticationGuard } from './admin/authentication/guards/authentication.guard';
 
 export const routes: Routes = [
@@ -20,28 +14,31 @@ export const routes: Routes = [
             redirectTo: "#", pathMatch: "full"
         }]
     },
-
     { path: "#", component: SigninComponent },
     { path: "signup", component: SignupComponent },
     {
         path: "profile",
         canActivate: [authenticationGuard],
-        component: ProfileManagementComponent
+        loadComponent: () => import('./admin/authentication/profile-management/profile-management.component')
+            .then((mod) => mod.ProfileManagementComponent),
     },
     {
         path: "manage/recipe",
         canActivate: [authenticationGuard],
-        component: ManageRecipeComponent
+        loadComponent: () => import('./recipe-management/manage-recipe/manage-recipe.component')
+            .then((mod) => mod.ManageRecipeComponent),
     },
     {
         path: "recipe/holder",
         canActivate: [authenticationGuard],
-        component: RecipeHolderComponent
+        loadComponent: ()=> import('./recipe-management/recipe-holder/recipe-holder.component')
+        .then((mod)=>mod.RecipeHolderComponent),
     }, 
     {
         path: "recipe/viewer",
         canActivate: [authenticationGuard],
-        component: RecipeviewerComponent
+        loadComponent: () => import('./recipe-management/recipeviewer/recipeviewer.component')
+        .then((m)=> m.RecipeviewerComponent),
     },
     {
         path: "home",
@@ -51,7 +48,8 @@ export const routes: Routes = [
     {
         path: "recipes/viewer",
         canActivate: [authenticationGuard],
-        component: MultiRecipeviewerComponent
+        loadComponent: () => import('./recipe-management/multi-recipeviewer/multi-recipeviewer.component')
+            .then((m) => m.MultiRecipeviewerComponent),
     }, 
      
 ];
