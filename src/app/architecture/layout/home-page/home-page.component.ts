@@ -77,11 +77,8 @@ export class HomePageComponent implements OnDestroy, OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          if (res.statusCode == 200) {
-            this.recipes = res.entity;
-          } else {
+          (res.statusCode == 200) ? this.recipes = res.entity : 
             this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
-          }
         },
         error: (err) => {
           this.snackbarManService.showNotificationMessage("server-error!!", "snackbar-danger");

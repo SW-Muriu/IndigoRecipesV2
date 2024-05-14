@@ -6,7 +6,7 @@
 
 
 // describe('authenticationGuard', () => {
-//   let guard: authenticationGuard
+//   let guard: any;
   
 //   const executeGuard: CanActivateFn = (...guardParameters) => 
 //       TestBed.runInInjectionContext(() => authenticationGuard(...guardParameters));

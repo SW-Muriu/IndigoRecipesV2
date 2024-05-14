@@ -68,7 +68,7 @@ export class SignupComponent {
           }
         },
         error: (err) => {
-          this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
+          this.snackbarManService.showNotificationMessage("Server Error!!", "snackbar-danger");
         },
         complete: () => {
           // this.fetchAllUsers();

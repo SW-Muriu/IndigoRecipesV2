@@ -7,17 +7,30 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../architecture/services/notification/notification.service';
 import { AuthService } from '../../services/authservices/auth.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
-  let authManService: any;
-  let snackbarManService: any;
-  let router: any;
-  let spyInstance: jest.SpyInstance;
+  let authManService: AuthService;
+  let snackbarManService: NotificationService;
+  let router: Router;
   
 
+  
+
+  //Mock Response
+  const successfulResponse = {
+    statusCode: 200,
+    message: 'User registered successfully!',
+    entity: { userName: 'testuser', email: 'test@example.com' },
+  };
+
+  const errorResponse = {
+    statusCode: 400,
+    message: 'User registered successfully!',
+    entity: {},
+  }
 
   beforeEach(async () => {
 
@@ -30,6 +43,24 @@ describe('SignupComponent', () => {
       ],
       providers: [
         FormBuilder,
+        {
+          provide: AuthService, 
+          useValue: {
+            registerUser: jest.fn(),
+          }
+        }, 
+        {
+          provide: Router, 
+          useValue: {
+            navigate: jest.fn(),
+          }
+        }, 
+        {
+          provide: NotificationService, 
+          useValue: {
+            showNotificationMessage: jest.fn()
+          }
+        }
       ]
     })
       .compileComponents();
@@ -59,7 +90,7 @@ describe('SignupComponent', () => {
     
   });
 
-  it('should register user and navigate to home on successful signup', () => {
+  it('should register user and navigate to home on successful signup (200)', () => {
     //Mock Form
     component.signupForm.setValue({
       firstName: 'Test',
@@ -68,24 +99,61 @@ describe('SignupComponent', () => {
       userName: 'testuser',
       password: 'password',
       confirmPassword: 'password',
-    }); 
-
-    //Mock Response
-    const successfulResponse = {
-      statusCode: 200,
-      message: 'User registered successfully!',
-      entity: { userName: 'testuser', email: 'test@example.com' },
-    };
-
-    spyInstance = jest.spyOn(authManService, 'registerUser').mockReturnValue(of(successfulResponse));
+    });
+   
+    const registerUser$ = authManService.registerUser as jest.Mock;
+    registerUser$.mockReturnValue(of(successfulResponse))
+    jest.spyOn(snackbarManService, "showNotificationMessage");
+    jest.spyOn(router, "navigate");
 
     component.onSignUp();
 
-    expect(spyInstance).toHaveBeenCalledWith(component.signupForm.value);
-    // expect(snackbarManService).toHaveBeenCalledWith(successfulResponse.message, "snackbar-success");
-    // expect(sessionStorage.getItem('email')).toEqual(successfulResponse.entity.email);
-    // expect(sessionStorage.getItem('username')).toEqual(successfulResponse.entity.userName);
-    // expect(router.navigate).toHaveBeenCalledWith(['/home']);
+    expect(registerUser$).toHaveBeenCalledWith(component.signupForm.value);
+    expect(snackbarManService.showNotificationMessage).toHaveBeenCalledWith(successfulResponse.message, "snackbar-success");
+    expect(router.navigate).toHaveBeenCalledWith(['/home']);
+  });
+
+
+  it('should call registerUser on authService and handle an errorResponse(not 200)', () => {
+    component.signupForm.setValue({
+      firstName: 'Test',
+      lastName: 'User',
+      email: 'test@example.com',
+      userName: 'testuser',
+      password: 'password',
+      confirmPassword: 'password',
+    });
+
+
+    const registerUser$ = (authManService.registerUser as jest.Mock).mockReturnValue(of(errorResponse));;
+    jest.spyOn(snackbarManService, "showNotificationMessage");
+
+    //trigger run 
+    component.onSignUp();
+
+    expect(registerUser$).toHaveBeenCalled();
+    expect(snackbarManService.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
+  })
+
+  it('should handle server down error', () => {
+    component.signupForm.setValue({
+      firstName: 'Test',
+      lastName: 'User',
+      email: 'test@example.com',
+      userName: 'testuser',
+      password: 'password',
+      confirmPassword: 'password',
+    });
+
+    const serverError = throwError('Server Error!!');
+    const registerUser$ = (authManService.registerUser as jest.Mock).mockReturnValue(serverError);;
+    jest.spyOn(snackbarManService, "showNotificationMessage");
+
+    component.onSignUp();
+
+    expect(registerUser$).toHaveBeenCalled();
+    expect(snackbarManService.showNotificationMessage).toHaveBeenCalledWith("Server Error!!", "snackbar-danger");
+
 
   })
   

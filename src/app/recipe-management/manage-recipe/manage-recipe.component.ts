@@ -10,6 +10,7 @@ import { RecipeService } from '../services/recipe.service';
 import { NotificationService } from '../../architecture/services/notification/notification.service';
 import { Recipe } from '../../architecture/utils/interfaces';
 import { Option } from '../../architecture/utils/interfaces';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class ManageRecipeComponent {
     private snackbarManService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
+    private location: Location,
   ) {
     /**** Generate the forms whose form fields are not fixed */
     this.ingredientsForm = this.fb.group({
@@ -92,7 +94,7 @@ export class ManageRecipeComponent {
       next: (params) => {
         if (params.hasOwnProperty('data')) {
           this.formData = this.onSearchRecipe(JSON.parse(params["data"]));
-          
+
           //Populate the forms with the collected nested arrays data
           this.populateFormsWithData();
         }
@@ -202,51 +204,21 @@ export class ManageRecipeComponent {
    */
 
   onSubmit(): void {
-    const payload: any = {
-      title: this.recipeDetailsForm.value.title,
-      description: this.recipeDetailsForm.value.description,
-      yield: this.recipeDetailsForm.value.yield,
-      prepTime: this.recipeDetailsForm.value.prepTime,
-      cookTime: this.recipeDetailsForm.value.cookTime,
-      place: this.recipeDetailsForm.value.place.label,
-      time: this.recipeDetailsForm.value.time.label,
-      totalTime: this.recipeDetailsForm.value.prepTime + this.recipeDetailsForm.value.cookTime,
-      ingredients: this.ingredientsForm.value.ingredients,
-      tips: this.tipsForm.value.tips,
-      instructions: this.instructionsForm.value.instructions,
-      comments: [],
-      rating: 0,
-      imageUrl: '',
-      // id: 0,
-    }
 
-    console.log("Sumission Payload");
-
-
-    const UpdatePayload: any = {
-      owner: this.username,
-      title: this.recipeDetailsForm.value.title,
-      description: this.recipeDetailsForm.value.description,
-      yield: this.recipeDetailsForm.value.yield,
-      prepTime: this.recipeDetailsForm.value.prepTime,
-      cookTime: this.recipeDetailsForm.value.cookTime,
-      place: this.recipeDetailsForm.value.place.label,
-      time: this.recipeDetailsForm.value.time.label,
-      totalTime: this.recipeDetailsForm.value.prepTime + this.recipeDetailsForm.value.cookTime,
-      ingredients: this.ingredientsForm.value.ingredients,
-      tips: this.tipsForm.value.tips,
-      instructions: this.instructionsForm.value.instructions,
-      id: this.currentId,
-    }
+    this.recipeDetailsForm.value.ingredients = this.ingredientsForm.value.ingredients;
+    this.recipeDetailsForm.value.tips = this.tipsForm.value.tips;
+    this.recipeDetailsForm.value.instructions = this.instructionsForm.value.instructions;
+    this.recipeDetailsForm.value.totalTime = this.recipeDetailsForm.value.prepTime + this.recipeDetailsForm.value.cookTime;
+    this.recipeDetailsForm.value.imageUrl = '';
+    this.recipeDetailsForm.value.owner = this.username;
 
     switch (this.pageFunction) {
       case 'Update':
-        console.log("Updating");
-
-        this.onUpdateRecipe(UpdatePayload);
+        this.recipeDetailsForm.value.id = this.currentId;
+        this.onUpdateRecipe(this.recipeDetailsForm.value);
         break;
       default:
-        this.onAddRecipe(payload);
+        this.onAddRecipe(this.recipeDetailsForm.value);
         break;
     }
   }
@@ -259,16 +231,12 @@ export class ManageRecipeComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          if (res.statusCode == 200) {
-            this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
-            this.router.navigate(['/home']);
-          }
-          else {
-            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
-          }
+          if (res.statusCode != 200) this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
+          this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
+          this.router.navigate(['/home']);
         },
-        error: (err) => {
-          this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
+        error: () => {
+          this.snackbarManService.showNotificationMessage("Server Error!!", "snackbar-danger");
         },
         complete: () => {
 
@@ -282,16 +250,12 @@ export class ManageRecipeComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          if (res.statusCode == 200) {
-            this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
-            this.router.navigate(['/home']);
-          } else {
-            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
-          }
-        },
-        error: (err) => {
-          this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
+          if (res.statusCode != 200) this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
+          this.snackbarManService.showNotificationMessage(res.message, "snackbar-success");
           this.router.navigate(['/home']);
+        },
+        error: () => {
+          this.snackbarManService.showNotificationMessage("Server Error!!", "snackbar-danger");
         }
       })
   }
@@ -304,43 +268,38 @@ export class ManageRecipeComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          console.log("ResSearch", res);
-          
-          if (res.statusCode == 200) {
-            this.formData = res.entity;
-            this.currentId = res.entity.id;
-            this.pageFunction = 'Update'
+          if (res.statusCode != 200) this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger");
+          this.formData = res.entity;
+          this.currentId = res.entity.id;
+          this.pageFunction = 'Update'
 
-            //Initialize recipe Details form with data 
-            this.recipeDetailsForm = this.fb.group({
-              title: [this.formData.title, [Validators.required]],
-              description: [this.formData.description, [Validators.required]],
-              yield: [this.formData.yield, [Validators.required]],
-              prepTime: [this.formData.prepTime, [Validators.required]],
-              cookTime: [this.formData.cookTime, [Validators.required]],
-              place: [this.formData.place, [Validators.required]],
-              time: [this.formData.time, [Validators.required]],
-            });
+          //Initialize recipe Details form with data 
+          this.recipeDetailsForm = this.fb.group({
+            title: [this.formData.title, [Validators.required]],
+            description: [this.formData.description, [Validators.required]],
+            yield: [this.formData.yield, [Validators.required]],
+            prepTime: [this.formData.prepTime, [Validators.required]],
+            cookTime: [this.formData.cookTime, [Validators.required]],
+            place: [this.formData.place, [Validators.required]],
+            time: [this.formData.time, [Validators.required]],
+          });
 
-            //Call the data for the nested arrays of the recipeDetails Form
-            this.ingredientsData = this.formData.ingredients
-            this.tipsData = this.formData.tips;
-            this.instructionsData = this.formData.instructions;
-            this.populateFormsWithData();
+          //Call the data for the nested arrays of the recipeDetails Form
+          this.ingredientsData = this.formData.ingredients
+          this.tipsData = this.formData.tips;
+          this.instructionsData = this.formData.instructions;
+          this.populateFormsWithData();
 
-          } else {
-            this.snackbarManService.showNotificationMessage(res.message, "snackbar-danger")
-          }
         },
-        error: (err) => {
-          this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger")
+        error: () => {
+          this.snackbarManService.showNotificationMessage("Server Error!!", "snackbar-danger")
         }
       });
     return this.formData;
   }
 
   onCancel(): void {
-    this.router.navigate(['/home']);
+    this.location.back();
   }
 
 }

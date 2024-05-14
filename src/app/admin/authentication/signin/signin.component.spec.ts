@@ -7,7 +7,7 @@ import { AuthService } from '../../services/authservices/auth.service';
 import { SharedModule } from '../../../architecture/modules/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 
 describe('SigninComponent', () => {
@@ -137,7 +137,7 @@ describe('SigninComponent', () => {
   });
 
 
-  it('should throw an error on errorResponse', () => {
+  it('should throw an error on errorResponse (not 200)', () => {
     const loginUser$ = authManServiceMock.logInUser as jest.Mock;
     const errorResponse = {
       statusCode: 400,
@@ -151,6 +151,23 @@ describe('SigninComponent', () => {
     expect(notificationManMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "login-snackbar");
 
   });
+
+
+  it('should throw an error where server is down', () => {
+    const loginUser$ = authManServiceMock.logInUser as jest.Mock;
+    const errorResponse = throwError("Server Error");
+    loginUser$.mockReturnValue(errorResponse);
+    component.onLogin();
+    expect(notificationManMock.showNotificationMessage).toHaveBeenCalledWith("Server Error!!", "snackbar-danger");
+  }); 
+
+  it("it should handle forgot password and generate link", () => {
+    const handlePassword$ = notificationManMock.showNotificationMessage as jest.Mock;
+    
+    component.handleForgotPassword();
+
+    expect(handlePassword$).toHaveBeenCalledWith("A login link has been forwarded to your email account", "snackbar-success");
+  })
 
 })
 

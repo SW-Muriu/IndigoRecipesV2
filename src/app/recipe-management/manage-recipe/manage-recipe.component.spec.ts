@@ -6,9 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecipeService } from '../services/recipe.service';
 import { NotificationService } from '../../architecture/services/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Recipe } from '../../architecture/utils/interfaces';
+import { HttpParams } from '@angular/common/http';
+import { Location } from '@angular/common';
+import { Expansion } from '@angular/compiler';
 
 describe('ManageRecipeComponent', () => {
   let component: ManageRecipeComponent;
@@ -16,9 +19,9 @@ describe('ManageRecipeComponent', () => {
   let recipeServiceMock: RecipeService;
   let snackbarMock: NotificationService;
   let routerMock: Router;
-  // let routeMock: ActivatedRoute;
   let fb: FormBuilder;
   let mockActivatedRoute: any;
+  let locationMock: Location
 
   let mockRecipe: Recipe = {
     title: 'Ugali Mayai',
@@ -66,7 +69,8 @@ describe('ManageRecipeComponent', () => {
 
   let successfulResponse = {
     statusCode: 200,
-    message: 'Recipe API hit successfully'
+    message: 'Recipe API hit successfully',
+    entity: mockRecipe
   };
 
   let errorResponse = {
@@ -102,6 +106,7 @@ describe('ManageRecipeComponent', () => {
         },
         { provide: NotificationService, useValue: { showNotificationMessage: jest.fn() } },
         { provide: Router, useValue: { navigate: jest.fn() } },
+        {provide: Location, useValue: {back: jest.fn()}},
       ]
     })
       .compileComponents();
@@ -111,6 +116,7 @@ describe('ManageRecipeComponent', () => {
     snackbarMock = TestBed.inject(NotificationService);
     routerMock = TestBed.inject(Router);
     fb = TestBed.inject(FormBuilder);
+    locationMock = TestBed.inject(Location);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -368,7 +374,7 @@ describe('ManageRecipeComponent', () => {
       'Instruction 1',
       'Instruction 2',
     ];
-    component.ingredientsData = instructionsData;
+    component.instructionsData = instructionsData;
 
     component.populateFormsWithData();
 
@@ -413,6 +419,17 @@ describe('ManageRecipeComponent', () => {
       .toHaveBeenCalledWith(['/home']);
   });
 
+  it('should call postNewRecipe on recipeManService and handle server down error', () => {
+    const postNewRecipe$ = recipeServiceMock.postNewRecipe as jest.Mock;
+    const serverDownError = throwError("Server Error!!");
+    postNewRecipe$.mockReturnValue(serverDownError);
+    jest.spyOn(snackbarMock, "showNotificationMessage")
+
+    component.onAddRecipe(mockRecipe);
+
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("Server Error!!", "snackbar-danger");
+  })
+
   it('should call postNewRecipe on recipeManService and handle error response', () => {
     (recipeServiceMock.postNewRecipe as jest.Mock).mockReturnValue(of(errorResponse));
 
@@ -438,6 +455,17 @@ describe('ManageRecipeComponent', () => {
       .toHaveBeenCalledWith(['/home']);
   });
 
+  it('should call updateRecipe on recipeManService and handle server down error', () => {
+    const onUpdateRecipe$ = recipeServiceMock.updateRecipe as jest.Mock;
+    const serverDownError = throwError("Server Error!!");
+    onUpdateRecipe$.mockReturnValue(serverDownError);
+    jest.spyOn(snackbarMock, "showNotificationMessage")
+
+    component.onUpdateRecipe(mockRecipe);
+
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("Server Error!!", "snackbar-danger");
+  })
+
   it('should call onUpdateRecipe on recipeManService and handle error response', () => {
     (recipeServiceMock.updateRecipe as jest.Mock).mockReturnValue(of(errorResponse));
 
@@ -448,26 +476,89 @@ describe('ManageRecipeComponent', () => {
       .toHaveBeenLastCalledWith(mockRecipe);
     expect(snackbarMock.showNotificationMessage)
       .toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
+  });
+
+
+
+  it('should call searchByRecipeId and handle successful response (200)', () => {
+    const id: number = 1;
+    const formValues = {
+      title: successfulResponse.entity.title,
+      description: successfulResponse.entity.description,
+      yield: successfulResponse.entity.yield,
+      prepTime: successfulResponse.entity.prepTime,
+      cookTime: successfulResponse.entity.cookTime,
+      place: successfulResponse.entity.place,
+      time: successfulResponse.entity.time,
+    }
+    const searchByRecipeId$ = recipeServiceMock.searchRecipeById as jest.Mock;
+    searchByRecipeId$.mockReturnValue(of(successfulResponse));
+    jest.spyOn(component, "populateFormsWithData");
+
+    component.onSearchRecipe(id);
+    
+    expect(searchByRecipeId$).toHaveBeenCalledWith(new HttpParams().set("id", id));
+    expect(component.formData).toBe(successfulResponse.entity);
+    expect(component.currentId).toBe(successfulResponse.entity.id);
+    expect(component.pageFunction).toBe('Update');
+
+
+    //Assert the form values
+    expect(component.recipeDetailsForm.value).toMatchObject(formValues)
+
+    //Assert the array values 
+    expect(component.ingredientsData.length).toEqual(successfulResponse.entity.ingredients.length);
+    expect(component.tipsData.length).toEqual(successfulResponse.entity.tips.length);
+    expect(component.instructionsData.length).toEqual(successfulResponse.entity.instructions.length);
+
+    //Expect the population function to have been called 
+    expect(component.populateFormsWithData).toHaveBeenCalled();
   }); 
 
-  // it('should call searchRecipeById on recipeManService and populate forms with respective data', () => {
-  //   const recipeId = 1;
-  
-    
-  //   (recipeServiceMock.searchRecipeById as jest.Mock).mockReturnValue(of(successfulResponse));
+  it('should call searchByReceipeId in recipe Service and handle a not 200 response', () => {
+    const id: number = 1;
+    const searchByRecipeId$ = recipeServiceMock.searchRecipeById as jest.Mock;
+    searchByRecipeId$.mockReturnValue(of(errorResponse));
+    jest.spyOn(snackbarMock, "showNotificationMessage");
 
-  //   component.onSearchRecipe(recipeId);
-  //   console.log("FormData",component.formData)
-    
+    component.onSearchRecipe(id);
 
-  //   expect(recipeServiceMock.searchRecipeById).toHaveBeenCalledWith(new HttpParams().set("id", recipeId));
-  //   // expect(returnedData).toEqual([])//Function does not return anything
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
+  })
 
-  //   expect(component.formData).toEqual(mockApiResponse.entity);
+  it('should handle server down respnse for searchRecipeById', () => {
+    const searchByRecipeId$ = recipeServiceMock.searchRecipeById as jest.Mock;
+    const id: number = 1;
+    const serverDownError = throwError("Server Error");
+    searchByRecipeId$.mockReturnValue((serverDownError));
+    jest.spyOn(snackbarMock, "showNotificationMessage");
+
+    component.onSearchRecipe(id);
+
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("Server Error!!", "snackbar-danger");
+  });
+
+  it('should navigate to previous url using location back service', () => {
+    const back$ = locationMock.back as jest.Mock;
+
+    //Trigger run 
+    component.onCancel();
+
+    expect(back$).toHaveBeenCalled();
+  })
 
 
+  //On Submit Function
+  // it('should call onUpdateRecipe when pageFunction is update', () => {
+  //   jest.spyOn(component, "onSubmit");
+  //   jest.spyOn(component, "onUpdateRecipe");
+
+  //   component.pageFunction = 'Update';  
+
+  //   component.onSubmit();
+
+  //   expect(component.onUpdateRecipe).toHaveBeenCalled();
   // })
-
 
 
 

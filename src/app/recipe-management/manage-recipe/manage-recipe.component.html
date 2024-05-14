@@ -83,7 +83,7 @@
                                                         <mat-label>Cuisine</mat-label>
                                                         <mat-select formControlName="place" placeholder="Cuisine">
                                                             <mat-option *ngFor="let option of placeOptions"
-                                                                [value]="option">{{ option.label }}</mat-option>
+                                                                [value]="option.label">{{ option.label }}</mat-option>
                                                         </mat-select>
                                                         <mat-error
                                                             *ngIf="recipeDetailsForm.get('place')?.hasError('required')">The
@@ -98,7 +98,7 @@
                                                         <mat-label>Time of Meal</mat-label>
                                                         <mat-select formControlName="time" placeholder="Time">
                                                             <mat-option *ngFor="let option of timeOptions"
-                                                                [value]="option">{{ option.label }}</mat-option>
+                                                                [value]="option.label">{{ option.label }}</mat-option>
                                                         </mat-select>
                                                         <mat-error
                                                             *ngIf="recipeDetailsForm.get('time')?.hasError('required')">The

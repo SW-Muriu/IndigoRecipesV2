@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../services/notification/notification.service';
 import { RecipeService } from '../../../recipe-management/services/recipe.service';
-import { signal } from '@angular/core';
+import { of, throwError } from 'rxjs';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -18,17 +18,20 @@ describe('HomePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePageComponent, SharedModule, BrowserAnimationsModule]
+      imports: [HomePageComponent, SharedModule, BrowserAnimationsModule], 
+      providers: [
+      ]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(HomePageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    
     routerMock = TestBed.inject(Router);
     snackbarMock = TestBed.inject(NotificationService);
     recipeServiceMock = TestBed.inject(RecipeService);
-
+    fixture = TestBed.createComponent(HomePageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    
   });
 
   it('should create', () => {
@@ -83,5 +86,56 @@ describe('HomePageComponent', () => {
 
     expect(spyInstance).toHaveBeenCalled();
     expect(component.currentIndex$()).toBe(6);
-  })
+  });
+
+
+  
+  //GetNewRecipes 
+  it('should call fetchNewRecipes and handle successful response (200)', () => {
+    const successfulResponse = {
+      statusCode: 200,
+      message: "Successful Response",
+      entity: {},
+    }
+    spyInstance = jest.spyOn(recipeServiceMock, "fetchNewRecipes");
+    spyInstance.mockReturnValue(of(successfulResponse));
+    jest.spyOn(snackbarMock, "showNotificationMessage");
+
+    component.getNewRecipes();
+
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledTimes(0);
+  }); 
+
+
+  it('should call fetchNewRecipes and handle unsuccessful response (not 200)', () => {
+    const errorResponse = {
+      statusCode: 300,
+      message: "Successful Response",
+      entity: {},
+    }
+    spyInstance = jest.spyOn(recipeServiceMock, "fetchNewRecipes");
+    spyInstance.mockReturnValue(of(errorResponse));
+    jest.spyOn(snackbarMock, "showNotificationMessage");
+
+    component.getNewRecipes();
+
+    
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
+  }); 
+
+
+  it('should call fetchNewRecipes and server down error', () => {
+    const errorResponse = throwError("Server Error")
+    spyInstance = jest.spyOn(recipeServiceMock, "fetchNewRecipes");
+    spyInstance.mockReturnValue(errorResponse);
+    jest.spyOn(snackbarMock, "showNotificationMessage");
+
+    component.getNewRecipes();
+
+
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("server-error!!", "snackbar-danger");
+  }); 
+
+
+
 });

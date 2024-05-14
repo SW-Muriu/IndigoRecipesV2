@@ -106,6 +106,24 @@ describe('AuthService', () => {
     );
   });
 
+  //Update User 
+  it('should return an observable with successful update user message on updateUser', () => {
+    const updateUser$ = service.updateUser(mockUserData);
+
+    updateUser$.subscribe((res) => {
+      expect(res).toEqual(mockResponse);
+    })
+  }); 
+
+  it('should call Http.put with the corrent URL and data', () => {
+    service.updateUser(mockUserData);
+
+    expect(_http.put).toHaveBeenCalledWith(
+      `${service.serverUrl}/update`,
+      { body: mockUserData }
+    );
+  });
+
 
 
 
