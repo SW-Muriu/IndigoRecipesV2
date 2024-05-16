@@ -1,0 +1,25 @@
+.padding {
+    top: 30px;
+}
+
+
+
+@media screen and (min-width: 500px) {
+    input {
+        width: 100%;
+        text-wrap: wrap;
+    }
+
+    mat-form-field {
+        justify-content: center;
+        justify-items: center;
+        width: 90%;
+    }
+
+    .width {
+        display: flex;
+        justify-content: center;
+        // width: 70%;
+        align-items: center;
+    }
+}

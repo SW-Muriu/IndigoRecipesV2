@@ -1,0 +1,28 @@
+<main>
+    <section>
+        <section>
+            <main class="main">
+                <div class="content">
+                    <div class="left-side">
+
+                        <h1>Contact Us</h1>
+                        <br>
+                        <div class="search-container">
+                            <form [formGroup]="mngForm">
+
+                                <textarea matINput formControlName="response" class="search-input" placeholder="Kindly input your review" required></textarea>
+                               
+                            </form>
+                        
+                            <button [disabled]="!mngForm.valid" mat-button-raised class="search-button" (click)="onSendEmail()">
+                                <i class="fas fa-search"></i>Send Email </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <main>
+                © All Rights Reserved | Indigo Recipes | Samsicker 2024
+            </main>
+        </section>
+    </section>
+</main>

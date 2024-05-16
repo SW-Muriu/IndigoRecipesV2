@@ -1,0 +1,30 @@
+<main>
+    <section>
+        <div class="container">
+            @for(recipe of recipes; track recipe.id){
+            <div class="item">
+                <mat-card>
+                    <div class="circle-container">
+                        <button mat-icon-button class="top-right-button" (click)="onLike(recipe.id)">
+                            <mat-icon>favorite_border</mat-icon>
+                        </button>
+                    </div>
+                    <img class="img" [src]="recipe.imageUrl" alt="Test Recipe">
+
+                    <mat-card-header>
+                        <mat-card-subtitle>{{recipe.place}} || {{recipe.time}} </mat-card-subtitle>
+                        <mat-card-title (click)="onViewMore(recipe.id)">{{recipe.title}}</mat-card-title>
+                        <mat-card-subtitle>
+                            <div class="rating">
+                                <mat-icon *ngFor="let star of stars" [class.active]="star <= recipe.rating">star</mat-icon>
+                            </div>
+                        </mat-card-subtitle>
+
+                    </mat-card-header>
+                </mat-card>
+            </div>
+            }
+
+        </div>
+    </section>
+</main>

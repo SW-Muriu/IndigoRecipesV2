@@ -1,0 +1,233 @@
+<app-header [shouldDeferContent]="shouldDeferContent"></app-header>
+
+
+<section>
+
+    <body>
+        <div class="content-below-header width">
+            <div class="card1">
+                <div class="header">
+                    <div class="row">
+                        <h2>{{ pageFunction }} Recipe </h2>
+                    </div>
+                </div>
+                <div>
+                    <mat-horizontal-stepper linear>
+                        <!-- Step 1: Recipe Details -->
+                        <div>
+                            <mat-step label="Recipe Details">
+                                <div>
+                                    <form [formGroup]="recipeDetailsForm">
+                                        <div>
+                                            <div>
+                                                <ng-container>
+                                                    <mat-form-field class="width" appearance="outline">
+                                                        <input matInput formControlName="title"
+                                                            placeholder="Recipe Title" required>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('title')?.hasError('required')">The
+                                                            title is required </mat-error>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                            </div>
+                                            <div>
+                                                <ng-container>
+                                                    <mat-form-field class="width" appearance="outline">
+                                                        <textarea matInput formControlName="description"
+                                                            placeholder="Recipe Description" required></textarea>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('description')?.hasError('required')">The
+                                                            description is required </mat-error>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                            </div>
+                                            <div>
+                                                <ng-container>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Yield</mat-label>
+                                                        <input matInput formControlName="yield" type="number"
+                                                            placeholder="Yield (Persons)" required>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('yield')?.hasError('required')">The
+                                                            yeild is required </mat-error>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                            </div>
+                                            <div>
+                                                <ng-container>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Prep Time</mat-label>
+                                                        <input matInput formControlName="prepTime" type="number"
+                                                            placeholder="Prep Time (Minutes)" required>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('prepTime')?.hasError('required')">The
+                                                            prep time is required </mat-error>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                            </div>
+                                            <div>
+                                                <ng-container>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Cook Time</mat-label>
+                                                        <input matInput formControlName="cookTime" type="number"
+                                                            placeholder="Cook Time (Minutes)" required>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('cookTime')?.hasError('required')">The
+                                                            cook time is required </mat-error>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                            </div>
+                                            <div>
+                                                <ng-container>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Cuisine</mat-label>
+                                                        <mat-select formControlName="place" placeholder="Cuisine">
+                                                            <mat-option *ngFor="let option of placeOptions"
+                                                                [value]="option.label">{{ option.label }}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('place')?.hasError('required')">The
+                                                            place is required</mat-error>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                            </div>
+
+                                            <div>
+                                                <ng-container>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Time of Meal</mat-label>
+                                                        <mat-select formControlName="time" placeholder="Time">
+                                                            <mat-option *ngFor="let option of timeOptions"
+                                                                [value]="option.label">{{ option.label }}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error
+                                                            *ngIf="recipeDetailsForm.get('time')?.hasError('required')">The
+                                                            meal time is required</mat-error>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                            </div>
+
+
+                                        </div>
+                                        <div>
+                                            <button type="submit" mat-button matStepperNext
+                                                [disabled]="!recipeDetailsForm.valid">Next</button>
+                                        </div>
+                                    </form>
+
+
+
+                                </div>
+                            </mat-step>
+                        </div>
+
+                        <div class="padding">
+                            <mat-step label="Ingredients">
+                                <form [formGroup]="ingredientsForm">
+                                    <div formArrayName="ingredients">
+                                        <div *ngFor="let ingredientControl of ingredientControls; let i = index">
+                                            <mat-form-field appearance="outline">
+                                                <textarea matInput [formControl]="ingredientControl"
+                                                    placeholder="Ingredient {{ i + 1 }}" required></textarea>
+                                                <mat-error
+                                                    *ngIf="ingredientControl.invalid && ingredientControl.touched">
+                                                    The ingredient is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <button type="button" mat-icon-button (click)="removeIngredient(i)">
+                                                <mat-icon>remove_circle</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" mat-button (click)="addIngredient()">Add
+                                            Ingredient</button>
+                                        <button type="submit" mat-button matStepperNext
+                                            [disabled]="!ingredientsForm.valid">Next</button>
+                                    </div>
+                                </form>
+                            </mat-step>
+                        </div>
+
+
+
+
+                        <!-- Step 3: Instructions -->
+                        <div class="padding">
+                            <mat-step label="Instructions">
+                                <form [formGroup]="instructionsForm">
+                                    <div formArrayName="instructions">
+                                        <div *ngFor="let instructionControl of instructionControls; let i = index">
+                                            <mat-form-field appearance="outline">
+                                                <textarea matInput [formControl]="instructionControl"
+                                                    placeholder="Instruction {{ i + 1 }}" required></textarea>
+                                                <mat-error
+                                                    *ngIf="instructionControl.invalid && instructionControl.touched">
+                                                    The instruction is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <button type="button" mat-icon-button (click)="removeInstruction(i)">
+                                                <mat-icon>remove_circle</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" mat-button (click)="addInstruction()">Add
+                                            Instruction</button>
+                                        <button type="submit" mat-button matStepperNext
+                                            [disabled]="!ingredientsForm.valid">Next</button>
+                                    </div>
+                                </form>
+                            </mat-step>
+                        </div>
+
+
+                        <!-- Step 4: Tips -->
+                        <div class="padding">
+                            <mat-step label="Tips">
+                                <div class="padding">
+                                    <form [formGroup]="tipsForm">
+                                        <div formArrayName="tips">
+                                            <div *ngFor="let tipControl of tipsControls; let i = index">
+                                                <mat-form-field appearance="outline">
+                                                    <textarea matInput [formControl]="tipControl"
+                                                        placeholder="Tip {{ i + 1 }}" required></textarea>
+                                                    <mat-error *ngIf="tipControl.invalid && tipControl.touched">
+                                                        The tip is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                                <button type="button" mat-icon-button (click)="removeTip(i)">
+                                                    <mat-icon>remove_circle</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button type="button" mat-button (click)="addTip()">Add Tip</button>
+                                            <button type="submit" mat-button matStepperNext
+                                                [disabled]="!ingredientsForm.valid">Next</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </mat-step>
+                        </div>
+
+
+                        <!-- Step 5: Submit -->
+                        <div class="padding">
+                            <mat-step>
+                                <div class="padding">
+                                    <p>Review your recipe details and submit.</p>
+                                    <button type="submit" mat-button (click)="onSubmit()">Submit</button>
+                                    <button type="submit" mat-button (click)="onCancel()">Cancel</button>
+                                </div>
+                            </mat-step>
+                        </div>
+                    </mat-horizontal-stepper>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</section>
+
+<!-- <app-footer></app-footer> -->

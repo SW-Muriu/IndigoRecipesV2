@@ -1,0 +1,97 @@
+<app-header [shouldDeferContent]="shouldDeferContent"></app-header>
+
+<main class="content-below-header">
+    <section>
+        <div class="homeband">
+            <div class="homeband-content">
+                Embark on a gastronomic journey with us! From the sizzle of breakfast to the savory bites of dinner!
+            </div>
+        </div>
+
+        <br>
+        <!-- <img  src="./../../../assets/nyamchom.jpg" alt=""> -->
+        <app-recipe-holder [recipes]="recipes"></app-recipe-holder>
+
+        <div class="row-placement">
+            <div class="responsive-column hover-effect" (click)="selectCuisine()">
+                <div>
+                    MORE RECIPES >>
+                </div>
+            </div>
+        </div>
+
+        <div class="div-container">
+            <div class="content">
+                <p><strong>Indigo Recipes </strong> has transformed cooking, health, and nutrition by championing
+                    homemade meals. Through our app, users
+                    discover diverse, nutritious recipes tailored to their dietary preferences. By emphasizing home
+                    cooking, we empower
+                    individuals to take control of their health and make informed food choices.</p>
+
+            </div>
+            <div class="image">
+                <img class="image-box" src="./../../../assets/nyamchom2.jpg" alt="Image">
+            </div>
+        </div>
+
+        <br>
+        <div class="seperator-band">
+            <div class="seperator-content">
+                <div class="rating">
+                    <mat-icon *ngFor="let star of stars" [class.active]="star <= rating">star</mat-icon>
+                    Rated 4.5 By Users!!
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <!-- Reviews -->
+        <div class="reviews-container">
+            <div class="review">
+                <div class="arrow left" (click)="prevReview()">&#9664;</div>
+                <div class="message">{{ reviewsArray[currentIndex$()].message }}
+                    <br>
+                    <div> ~<strong>{{ reviewsArray[currentIndex$()].sender }}</strong></div>
+                </div>
+                <div class="arrow right" (click)="nextReview()">&#9654;</div>
+            </div>
+        </div>
+        <br>
+
+
+        <!-- Explore Dinner Recipes -->
+        <div class="seperator-band">
+            <div class="seperator-content">
+                <div class="rating">
+                    Explore Recipes By Cuisine
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row-placement">
+            <div class="responsive-column2 hover-effect" (click)="selectCuisine()">
+                <div>
+                    AFRICAN
+                </div>
+            </div>
+            <div class="responsive-column2 hover-effect" (click)="selectCuisine()">
+                <div>
+                    ITALIAN
+                </div>
+            </div>
+            <div class="responsive-column2 hover-effect" (click)="selectCuisine()">
+                <div>
+                    CHINESE
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<br>
+<br>
+@defer (on viewport) {
+<app-footer></app-footer>
+} 
+@placeholder {
+    <div><footer>FOOTER LOADING</footer></div>
+}

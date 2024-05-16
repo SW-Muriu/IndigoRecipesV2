@@ -1,1 +1,49 @@
-<p>header works!</p>
+<section>
+    <header class="header">
+        <div class="header-left" (click)="navigateToHome()">
+            <h1>
+                <!-- <img src="../../../../assets/Indigo Recipesb.png" width="50" height="50" alt=""> -->
+                <strong>Indigo Recipes</strong>
+            </h1>
+        </div>
+        <div class="header-right">
+            <button mat-button (click)="addRecipe()" color="primary">Add Recipe</button>
+            <button mat-button (click)="updateProfile()" color="primary">My Profile</button>
+            <button mat-button (click)="onLogout()" color="primary">Logout</button>
+        </div>
+    </header>
+    <header class="bottom-header">
+    </header>
+
+    <!-- Search Area -->
+    <div *ngIf="shouldDeferContent">
+        <div>
+            <header class="header2">
+                <div class="search-container">
+                    <input type="text" [(ngModel)]="searchTerm" class="search-input" placeholder="Search">
+                    <mat-icon class="search-clear">
+                        <i color="primary" class="fas fa-times"></i>
+                    </mat-icon>
+                    <button mat-button (click)="performSearch()" (keyup.enter)="performSearch()">
+                        <i class="fas fa-search"></i>Search
+                    </button>
+                    <button mat-button (click)="clearSearchTerm()" (keyup.enter)="clearSearchTerm()">
+                        <i class="fas fa-search"></i>Clear
+                    </button>
+                    <!-- @if(searchTerm == null){
+                    @defer {
+                    <button mat-button (click)="performSearch()" (keyup.enter)="performSearch()">
+                        <i class="fas fa-search"></i>Clear
+                    </button>
+                    }
+                    } @else {
+                        <button mat-button (click)="performSearch()" (keyup.enter)="performSearch()">
+                            <i class="fas fa-search"></i>Clear
+                        </button>
+                    } -->
+ 
+                </div>
+            </header>
+        </div>
+    </div>
+</section>

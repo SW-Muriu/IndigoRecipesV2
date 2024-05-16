@@ -1,1 +1,136 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+html,
+body {
+    // font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Raleway', sans-serif;
+}
+
+app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.content-below-header {
+    padding-top: 150px;
+}
+
+//Grid system:
+
+$container-width: 720px;
+$gutter-width: 10px;
+$columns: 12;
+
+// Mixin for defining column widths
+@mixin make-col($span) {
+    flex: ($span / $columns) calc(100% - (#{$columns} * $gutter-width));
+    max-width: ($span / $columns) calc(100% - (#{$columns} * $gutter-width));
+}
+
+
+.grid-container {
+    width: $container-width;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows rows to wrap on smaller screens */
+}
+
+
+.grid-row {
+    display: flex;
+    /* Ensures child elements behave as flex items */
+    width: 100%;
+    /* Fills the container width */
+}
+
+.col-1 {
+    @include make-col(1);
+}
+
+.col-2 {
+    @include make-col(2);
+}
+
+.col-3 {
+    @include make-col(3);
+}
+
+.col-4 {
+    @include make-col(4);
+}
+
+.col-5 {
+    @include make-col(5);
+}
+
+.col-6 {
+    @include make-col(6);
+}
+
+.col-7 {
+    @include make-col(7);
+}
+
+.col-8 {
+    @include make-col(8);
+}
+
+.col-9 {
+    @include make-col(9);
+}
+
+.col-10 {
+    @include make-col(10);
+}
+
+.col-11 {
+    @include make-col(11);
+}
+
+.col-12 {
+    @include make-col(12);
+}
+
+//*********************************************************************************
+// //Sticky Footer 
+// .site-wrapper {
+//     display: flex;
+//     min-height: 100vh;
+//     flex-direction: column;
+// }
+
+// .main-content {
+//     flex: 1;
+// }
+
+
+
+
+@media screen and (min-width: 500px) {
+    // app-footer {
+    //     position: fixed;
+    //     bottom: 0px;
+    //     // background-color: pink;
+    //     width: 100%;
+    // }
+}
+
+//Notifications
+.snackbar-danger {
+    background-color: #f44336; // Red color for danger messages
+    color: #fff; // White text color for better contrast
+    padding: 0.2rem;
+    /* Adjust padding if needed */
+}
+
+.snackbar-success {
+    background-color: #292c6b; // Green color for success messages
+    color: #fff; // White text color for better contrast
+    padding: 0.2rem;
+    /* Adjust padding if needed */
+}

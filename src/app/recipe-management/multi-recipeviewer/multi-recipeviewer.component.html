@@ -1,0 +1,68 @@
+<app-header [shouldDeferContent]="shouldDeferContent" (searchValue)="onSearch($event)" (clearSearch)="onClearSearch($event)"></app-header>
+<div>
+    <div>
+        <header class="header2">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search">
+                <button mat-button>
+                    <i class="fas fa-search"></i>Search </button>
+            </div>
+        </header>
+    </div>
+</div>
+<main class="content-below-header">
+    <section>
+        <div>
+            <mat-tab-group>
+                <mat-tab label="ALL RECIPES">
+                    <div>
+                        <app-recipe-holder [recipes]="recipes">
+                        </app-recipe-holder>
+                    </div>
+                </mat-tab>
+
+                <!-- FAV RECIPES -->
+
+                <mat-tab label="SAVED RECIPES">
+                    @if(favRecipes.length != 0){
+                    <div>
+                        <app-recipe-holder [recipes]="favRecipes">
+                        </app-recipe-holder>
+                    </div>
+                    } @else {
+                        <br>
+                        <div class="center-message">
+                            You have not saved any recipes yet. Click on a recipe heart to add it to
+                            your favorites.
+                        </div>
+                    }
+
+                </mat-tab>
+
+                <!-- MY RECIPES -->
+
+                <mat-tab label="MY RECIPES">
+                    @if(myRecipes.length != 0){
+                    <div>
+                        <app-recipe-holder [recipes]="myRecipes">
+                        </app-recipe-holder>
+                    </div>
+                    } @else {
+                    <br>
+                    <div class="center-message">
+                     You have not posted your recipes. Click on the below button to post a recipe
+                    </div>
+                    <div class="row-placement">
+                        <div class="responsive-column hover-effect" (click)="addRecipe()">
+                            <div>
+                                POST YOUR RECIPES
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </mat-tab>
+
+            </mat-tab-group>
+        </div>
+    </section>
+</main>

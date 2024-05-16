@@ -1,0 +1,46 @@
+// Define breakpoints
+$breakpoints: (xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px);
+
+// Define the mixin for generating column classes
+@mixin generate-columns($xs, $sm, $md, $lg, $xl) {
+    .col-xs {
+        flex: 0 0 percentage(1 / 12 * $xs);
+        max-width: percentage(1 / 12 * $xs);
+    }
+
+    .col-sm {
+        flex: 0 0 percentage(1 / 12 * $sm);
+        max-width: percentage(1 / 12 * $sm);
+    }
+
+    .col-md {
+        flex: 0 0 percentage(1 / 12 * $md);
+        max-width: percentage(1 / 12 * $md);
+    }
+
+    .col-lg {
+        flex: 0 0 percentage(1 / 12 * $lg);
+        max-width: percentage(1 / 12 * $lg);
+    }
+
+    .col-xl {
+        flex: 0 0 percentage(1 / 12 * $xl);
+        max-width: percentage(1 / 12 * $xl);
+    }
+
+}
+
+//Defining a customer row 
+
+@mixin custom-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 15px;
+    margin-left: 15px;
+    padding: 10px;
+
+}
