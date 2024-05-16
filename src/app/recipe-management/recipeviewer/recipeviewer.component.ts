@@ -1,9 +1,9 @@
-import { BootstrapOptions, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SharedModule } from '../../architecture/modules/shared.module';
 import { FooterComponent } from '../../architecture/layout/footer/footer.component';
 import { HeaderComponent } from '../../architecture/layout/header/header.component';
 import { Comment, Recipe } from '../../architecture/utils/interfaces';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -176,8 +176,8 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
             (res.statusCode == 200) ? this.snackbarManService.showNotificationMessage("Recipe Reviewed Successfully!!", "snackbar-success") :
               this.snackbarManService.showNotificationMessage("There was a problem reviewing the recipe!!", "snackbar-danger");
           },
-          error: (err) => {
-            this.snackbarManService.showNotificationMessage(err.message, "snackbar-danger");
+          error: () => {
+            this.snackbarManService.showNotificationMessage("Server Error!!", "snackbar-danger");
           }
         })
     }
@@ -185,6 +185,6 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
 
   navigateBackHome(): void {
     this.location.back();
-  }
+  } 
 }
 

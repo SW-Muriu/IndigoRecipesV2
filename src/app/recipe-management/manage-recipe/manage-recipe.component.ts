@@ -27,7 +27,8 @@ import { Location } from '@angular/common';
 })
 export class ManageRecipeComponent {
 
-  recipeDetailsForm!: FormGroup;
+  recipeDetailsForm!: FormGroup; 
+  
   ingredientsForm!: FormGroup;
   instructionsForm: FormGroup;
   tipsForm: FormGroup;
@@ -101,6 +102,7 @@ export class ManageRecipeComponent {
       }
     })
 
+    this.recipeDetailsForm.value.title 
   }
 
   ngOnDestroy(): void {
@@ -127,6 +129,7 @@ export class ManageRecipeComponent {
       tips: [[]],
       instructions: [[]],
     });
+
   };
 
 
@@ -204,7 +207,6 @@ export class ManageRecipeComponent {
    */
 
   onSubmit(): void {
-
     this.recipeDetailsForm.value.ingredients = this.ingredientsForm.value.ingredients;
     this.recipeDetailsForm.value.tips = this.tipsForm.value.tips;
     this.recipeDetailsForm.value.instructions = this.instructionsForm.value.instructions;

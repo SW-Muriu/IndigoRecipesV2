@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../architecture/services/notification/notification.service';
 import { RecipeService } from '../services/recipe.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { sampledRecipes } from '../../architecture/utils/interfaces';
 
 describe('MultiRecipeviewerComponent', () => {
@@ -137,30 +137,25 @@ describe('MultiRecipeviewerComponent', () => {
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
   });
 
-  it('should call getAllRecipes and handle error response', () => {
-    const errorResponse = new Error();
-    const fetchAllRecipes$ = recipeManServiceMock.fetchAllRecipes as jest.Mock;
-    fetchAllRecipes$.mockReturnValue(of(errorResponse));
 
+  it('should call getAllRecipes and handle server down error', () => {
+    const fetchAllRecipes$ = recipeManServiceMock.fetchAllRecipes as jest.Mock;
+    fetchAllRecipes$.mockReturnValue(throwError("Server Error"));
     //Trigger run
     component.getAllRecipes();
 
-    expect(fetchAllRecipes$).toHaveBeenCalled();
-    expect(component.recipes).toEqual([])//remains empty
-    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("", "snackbar-danger");
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("server-error!!", "snackbar-danger");
   });
 
   /*****Get My Recipes */
   it('should call fetchMyRecipes and handle successful response (200)', () => {
     jest.spyOn(recipeManServiceMock, 'fetchMyRecipes').mockReturnValue(of(successfulResponse));
-    // const fetchMyRecipes$ = recipeManServiceMock.fetchMyRecipes as jest.Mock;
-    // fetchMyRecipes$.mockReturnValue(of(successfulResponse));
 
     //Trigger 
     component.getMyRecipes();
 
     expect(recipeManServiceMock.fetchMyRecipes).toHaveBeenCalled();
-    // expect(recipeManServiceMock.)
+    // expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(successfulResponse.message, "snackbar-success");
     // expect(component.recipes).toEqual(successfulResponse.entity);
   });
 
@@ -175,17 +170,14 @@ describe('MultiRecipeviewerComponent', () => {
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
   });
 
-  it('should call fetchMyRecipes and handle error response', () => {
-    const errorResponse = new Error();
-    const fetchMyRecipes$ = recipeManServiceMock.fetchMyRecipes as jest.Mock;
-    fetchMyRecipes$.mockReturnValue(of(errorResponse));
 
+  it('should call fetchMyRecipes and handle server down error', () => {
+    const fetchMyRecipes$ = recipeManServiceMock.fetchMyRecipes as jest.Mock;
+    fetchMyRecipes$.mockReturnValue(throwError("Server Error"));
     //Trigger run
     component.getMyRecipes();
 
-    expect(fetchMyRecipes$).toHaveBeenCalled();
-    expect(component.recipes).toEqual([])//remains empty
-    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("", "snackbar-danger");
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("server-error!!", "snackbar-danger");
   });
 
   /*****Get Saved Recipes */
@@ -211,17 +203,14 @@ describe('MultiRecipeviewerComponent', () => {
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
   });
 
-  it('should call fetchFavRecipes and handle error response', () => {
-    const errorResponse = new Error();
-    const fetchFavRecipes$ = recipeManServiceMock.fetchFavRecipes as jest.Mock;
-    fetchFavRecipes$.mockReturnValue(of(errorResponse));
 
+  it('should call fetchFavRecipesfetchFavRecipes and handle server down error', () => {
+    const fetchFavRecipes$ = recipeManServiceMock.fetchFavRecipes as jest.Mock;
+    fetchFavRecipes$.mockReturnValue(throwError("Server Error"));
     //Trigger run
     component.getSavedRecipes();
 
-    expect(fetchFavRecipes$).toHaveBeenCalled();
-    expect(component.recipes).toEqual([])//remains empty
-    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("", "snackbar-danger");
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("server-error!!", "snackbar-danger");
   });
 
   /*****************Searching through the recipes */
@@ -269,21 +258,22 @@ describe('MultiRecipeviewerComponent', () => {
     expect(component.searchThroughRecipes).toHaveBeenCalledTimes(3);
   }); 
 
-  // it('should recall the initial values of all arrays onClearSearch call', () => {
-  //   jest.spyOn(component, 'onClearSearch');
+  it('should recall the initial values of all arrays onClearSearch call', () => {
+    jest.spyOn(component, 'onClearSearch');
+    (recipeManServiceMock.fetchAllRecipes as jest.Mock).mockReturnValue(of(null));
+    (recipeManServiceMock.fetchMyRecipes as jest.Mock).mockReturnValue(of(null));
+    (recipeManServiceMock.fetchFavRecipes as jest.Mock).mockReturnValue(of(null))
+    jest.spyOn(component, "getAllRecipes");
+    jest.spyOn(component, "getMyRecipes");
+    jest.spyOn(component, "getSavedRecipes");
 
-  //   const testEvent: string = ''
-  //   //Trigger run
-  //   component.onClearSearch(testEvent);
+    const testEvent: string = ''
+    //Trigger run
+    component.onClearSearch(testEvent);
 
-  //   expect(component.getAllRecipes).toHaveBeenCalledWith(1);
-  //   expect(component.getMyRecipes).toHaveBeenCalledWith(1);
-  //   expect(component.getSavedRecipes).toHaveBeenCalledWith(1);
-  // })
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    jest.resetAllMocks();
-  });
+    expect(component.getAllRecipes).toHaveBeenCalledTimes(1);
+    expect(component.getMyRecipes).toHaveBeenCalledTimes(1);
+    expect(component.getSavedRecipes).toHaveBeenCalledTimes(1);
+  })
 
 });

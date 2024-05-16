@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { SharedModule } from '../../architecture/modules/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 
 describe('RecipeHolderComponent', () => {
@@ -111,6 +111,15 @@ describe('RecipeHolderComponent', () => {
 
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
   }); 
+
+  it('should call favoriteRecipe on recipe service and handle server down error', () => {
+    const id: number = 1;
+    (recipeManServiceMock.favoriteRecipe as jest.Mock).mockReturnValue(throwError("Server Error"));
+
+    component.onLike(id);
+
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("Server Error!!", "snackbar-danger");
+  })
 
 
 

@@ -6,18 +6,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecipeService } from '../services/recipe.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../architecture/services/notification/notification.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
-import { singleSampleRecipe } from '../../architecture/utils/interfaces';
+import { sampledRecipes, singleSampleRecipe } from '../../architecture/utils/interfaces';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 
 describe('RecipeviewerComponent', () => {
   let component: RecipeviewerComponent;
   let fixture: ComponentFixture<RecipeviewerComponent>;
   let recipeManServiceMock: RecipeService;
-  let routeMock: ActivatedRoute;
   let routerMock: Router;
   let snackbarMock: NotificationService;
+  let locationMock: Location;
 
   const successfulResponse = {
     statusCode: 200,
@@ -67,6 +68,12 @@ describe('RecipeviewerComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: mockQueryParams
+        }, 
+        {
+          provide: Location,
+          useValue: {
+            back: jest.fn()
+          }
         }
       ]
     })
@@ -77,6 +84,7 @@ describe('RecipeviewerComponent', () => {
     // routeMock = TestBed.inject(ActivatedRoute);
     routerMock = TestBed.inject(Router);
     snackbarMock = TestBed.inject(NotificationService);
+    locationMock = TestBed.inject(Location);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -114,7 +122,7 @@ describe('RecipeviewerComponent', () => {
 
     expect(recipeManServiceMock.searchRecipeById).toHaveBeenCalledWith(new HttpParams().set("id", recipeId));
     expect(component.recipe).toEqual(successfulResponse.entity)
-  }); 
+  });
 
   it('should handle the non-200 response', () => {
     const recipeId: number = 1;
@@ -125,7 +133,7 @@ describe('RecipeviewerComponent', () => {
 
     expect(recipeManServiceMock.searchRecipeById).toHaveBeenCalledWith(new HttpParams().set("id", recipeId));
     expect(component.recipe).toBeUndefined();
-  }); 
+  });
 
   it('should call searchRecipeById on recipeManService, set recipe, and show edit/delete if it belongs to the user', () => {
     const recipeId: number = 1;
@@ -152,7 +160,7 @@ describe('RecipeviewerComponent', () => {
 
     expect(recipeManServiceMock.searchRecipeById).toHaveBeenCalledWith(new HttpParams().set("id", recipeId));
     expect(component.recipe).toEqual(successfulResponse.entity)
-    expect(component.hideEditDelete).toBeFalsy();  
+    expect(component.hideEditDelete).toBeFalsy();
   });
 
   it('should call favoriteRecipe and handle successful response', () => {
@@ -164,7 +172,7 @@ describe('RecipeviewerComponent', () => {
 
     expect(favoriteRecipe$).toHaveBeenCalledWith(new HttpParams().set("id", id));
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(successfulResponse.message, "snackbar-success");
-  }); 
+  });
 
   it('should call favoriteRecipe and handle non-200 response', () => {
     const id: number = 1;
@@ -200,7 +208,7 @@ describe('RecipeviewerComponent', () => {
     expect(deleteRecipe$).toHaveBeenCalledWith(recipe);
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(successfulResponse.message, "snackbar-success");
     expect(routerMock.navigate).toHaveBeenCalledWith([route])//Navigates back on complete
-  }); 
+  });
 
   it('should call deleteRecipe on recipeManService and handle a non-200 response (unsuccessful response)', () => {
     const recipe = singleSampleRecipe;
@@ -212,34 +220,80 @@ describe('RecipeviewerComponent', () => {
     expect(deleteRecipe$).toHaveBeenCalledWith(recipe);
     expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith(errorResponse.message, "snackbar-danger");
     expect(routerMock.navigate).toHaveBeenCalledTimes(0) //Dont Navigate if there is an update error back on complete
-  }); 
+  });
 
 
-  xdescribe('testing shareClicked',()=> {
+  it('should call Shareclicked with correct properties for Swal Spy', () => {
+
     const title = `Test Recipe`;
     let swalFireSpy = jest.spyOn(Swal, 'fire');
+    component.shareClicked(title);
 
-    xit('should call Shareclicked with correct properties for Swal Spy', () => {
-      
-      
-      component.shareClicked(title);
+    expect(swalFireSpy).toHaveBeenCalledWith({
+      title: 'Share via',
+      showCancelButton: true,
+      confirmButtonText: 'Facebook',
+      cancelButtonText: 'WhatsApp',
+      showCloseButton: true,
+      html: `You can also <a href="mailto:?subject=Check out this article&amp;body=https://example.com/share?title=${encodeURIComponent(title)}">Email</a> it.`,
+      reverseButtons: true,
+    });
+  }); 
 
-      expect(swalFireSpy).toHaveBeenCalledWith({
-        title: 'Share via',
-        showCancelButton: true,
-        confirmButtonText: 'Facebook',
-        cancelButtonText: 'WhatsApp',
-        showCloseButton: true,
-        html: `You can also <a href="mailto:?subject=Check out this article&amp;body=${encodeURIComponent(`https://example.com/share?title=${title}`)}">Email</a> it.`,
-        reverseButtons: true,
-      });
+  it('should not add comment if the comment field is null', () => {
+    component.newComment = "";
+    component.username = "Junior";
+    component.recipe = singleSampleRecipe;
+    (recipeManServiceMock.updateRecipe as jest.Mock).mockReturnValue(throwError("Server Error!!"));
 
-      // xit('should show Facebook share success message on confirm in shareClicked', () => {
-      //   swalFireSpy.mockReturnValue(Promise.resolve({ isConfirmed: true }))
-      //   component.shareClicked(title);
-      //   expect(swalFireSpy).toHaveBeenCalled();
-      //   expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith('Recipe shared successfully on Facebook', 'snackbar-success');
-      // })
-    }) }); 
+    component.addComment();
+    expect(component.recipe.comments.length).toBe(1);
+  }); 
 
+  it('should call updateRecipe and handle successful response (200)', () => {
+    component.newComment = 'samsicker';
+    component.username = "Junior";
+    component.recipe = singleSampleRecipe;
+    const updateRecipe$ = (recipeManServiceMock.updateRecipe as jest.Mock).mockReturnValue(of(successfulResponse));
+
+    component.addComment();
+
+    expect(updateRecipe$).toHaveBeenCalledWith(singleSampleRecipe);
+    expect(component.recipe.comments.length).toBe(2);
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("Recipe Reviewed Successfully!!", 'snackbar-success');
+  }); 
+
+  it('should call updateRecipe and handle unsuccessful response (not 200)', () => {
+    component.newComment = 'asdasdadas';
+    component.username = "Junior";
+    component.recipe = singleSampleRecipe;
+    const updateRecipe$ = (recipeManServiceMock.updateRecipe as jest.Mock).mockReturnValue(of(errorResponse));
+    component.addComment();
+    expect(updateRecipe$).toHaveBeenCalledWith(singleSampleRecipe);
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("There was a problem reviewing the recipe!!", 'snackbar-danger');
+  }); 
+
+  it('should call updateRecipe and handle server down error', () => {
+    component.newComment = 'lkjhgfd';
+    component.username = "Junior";
+    component.recipe = singleSampleRecipe;
+    const updateRecipe$ = (recipeManServiceMock.updateRecipe as jest.Mock).mockReturnValue(throwError("Server Error!!"));
+
+    // trigger run
+    component.addComment();
+
+    expect(updateRecipe$).toHaveBeenCalledWith(singleSampleRecipe);
+    expect(snackbarMock.showNotificationMessage).toHaveBeenCalledWith("Server Error!!", 'snackbar-danger');
+  });
+
+  it('should navigate back on call navigateHome', () => {
+    jest.spyOn(component, "navigateBackHome");
+
+    component.navigateBackHome();
+
+    expect(locationMock.back).toHaveBeenCalled();
   })
+
+
+
+})

@@ -59,21 +59,26 @@ describe('RecipeService', () => {
   });
 
   /********** Fetching All Recipes */
-  it('Should return an Observable with a successful message on successfully fetching all recipes', () => {
-    const fetchAllRecipes$ = service.fetchAllRecipes();
 
-    fetchAllRecipes$.subscribe(res => {
-      expect(res).toEqual(mockResponse); //Expect successful response
-    })
-  });
 
-  it('Should call HttpClient.get with the correct URL and data', () => {
-    service.fetchAllRecipes();
+  describe("Fetch All", () => {
+    it('Should return an Observable with a successful message on successfully fetching all recipes', () => {
+      const fetchAllRecipes$ = service.fetchAllRecipes();
 
-    expect(_http.get).toHaveBeenCalledWith(
-      `${service.serverUrl}/get/all`,
-    );
-  });
+      fetchAllRecipes$.subscribe(res => {
+        expect(res).toEqual(mockResponse); //Expect successful response
+      })
+    });
+
+    it('Should call HttpClient.get with the correct URL and data', () => {
+      service.fetchAllRecipes();
+
+      expect(_http.get).toHaveBeenCalledWith(
+        `${service.serverUrl}/get/all`,
+      );
+    });
+  })
+
 
   /********* Fetching new recipes */
   it('Should return an Observable with a successful message on successfully getting favorite recipes', () => {

@@ -13,6 +13,8 @@ export class HeadersInterceptorsService implements HttpInterceptor {
         'content-Type': 'application/json'
       }
     });
+    console.log("fghjkl", modifiedReq);
+    
     return next.handle(modifiedReq);
   }
 

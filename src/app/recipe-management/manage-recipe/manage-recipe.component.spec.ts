@@ -11,7 +11,6 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Recipe } from '../../architecture/utils/interfaces';
 import { HttpParams } from '@angular/common/http';
 import { Location } from '@angular/common';
-import { Expansion } from '@angular/compiler';
 
 describe('ManageRecipeComponent', () => {
   let component: ManageRecipeComponent;
@@ -106,7 +105,7 @@ describe('ManageRecipeComponent', () => {
         },
         { provide: NotificationService, useValue: { showNotificationMessage: jest.fn() } },
         { provide: Router, useValue: { navigate: jest.fn() } },
-        {provide: Location, useValue: {back: jest.fn()}},
+        { provide: Location, useValue: { back: jest.fn() } },
       ]
     })
       .compileComponents();
@@ -378,7 +377,7 @@ describe('ManageRecipeComponent', () => {
 
     component.populateFormsWithData();
 
-    const instructionControls = component.ingredientControls as unknown as FormArray;
+    const instructionControls = component.instructionControls as unknown as FormArray;
     expect(instructionControls.length).toBe(instructionsData.length); // Expect all data added
 
     instructionControls.controls?.forEach((control, index) => {
@@ -496,7 +495,7 @@ describe('ManageRecipeComponent', () => {
     jest.spyOn(component, "populateFormsWithData");
 
     component.onSearchRecipe(id);
-    
+
     expect(searchByRecipeId$).toHaveBeenCalledWith(new HttpParams().set("id", id));
     expect(component.formData).toBe(successfulResponse.entity);
     expect(component.currentId).toBe(successfulResponse.entity.id);
@@ -513,7 +512,7 @@ describe('ManageRecipeComponent', () => {
 
     //Expect the population function to have been called 
     expect(component.populateFormsWithData).toHaveBeenCalled();
-  }); 
+  });
 
   it('should call searchByReceipeId in recipe Service and handle a not 200 response', () => {
     const id: number = 1;
@@ -549,19 +548,160 @@ describe('ManageRecipeComponent', () => {
 
 
   //On Submit Function
-  // it('should call onUpdateRecipe when pageFunction is update', () => {
-  //   jest.spyOn(component, "onSubmit");
-  //   jest.spyOn(component, "onUpdateRecipe");
+  it('should call onUpdateRecipe when pageFunction is update', () => {
+    component.pageFunction = 'Update';
+    component.currentId = 1;
+    component.ingredientsForm = fb.group({
+      ingredients: fb.array([
+        fb.control('Ingredient 1'),
+        fb.control('Ingredient 2'),
+        fb.control('Ingredient 3'),
+      ])
+    });
 
-  //   component.pageFunction = 'Update';  
+    component.instructionsForm = fb.group({
+      instructions: fb.array([
+        fb.control('Ingredient 1'),
+        fb.control('Ingredient 2'),
+        fb.control('Ingredient 3'),
+      ])
+    });
 
-  //   component.onSubmit();
+    component.tipsForm = fb.group({
+      tips: fb.array([
+        fb.control('Ingredient 1'),
+        fb.control('Ingredient 2'),
+        fb.control('Ingredient 3'),
+      ])
+    });
 
-  //   expect(component.onUpdateRecipe).toHaveBeenCalled();
-  // })
+    component.recipeDetailsForm = fb.group({
+      title: "Test 19",
+      description: "Test 19Test 19Test 19Test 19Test 19Test 19Test 19",
+      yield: 12,
+      prepTime: 12,
+      cookTime: 12,
+      place: "Italian",
+      time: "Brunch",
+    });
+
+    component.username = "Johndoe"
+
+    const mockedRecipeDetailsForm = {
+      "owner": "Johndoe",
+      "title": "Test 19",
+      "description": "Test 19Test 19Test 19Test 19Test 19Test 19Test 19",
+      "yield": 12,
+      "prepTime": 12,
+      "cookTime": 12,
+      "place": "Italian",
+      "time": "Brunch",
+      "totalTime": 24,
+      "ingredients": [
+        'Ingredient 1',
+        'Ingredient 2',
+        'Ingredient 3'
+      ],
+      "tips": [
+        'Ingredient 1',
+        'Ingredient 2',
+        'Ingredient 3'
+      ],
+      "instructions": [
+        'Ingredient 1',
+        'Ingredient 2',
+        'Ingredient 3'
+      ]
+    }
+
+
+    jest.spyOn(component, "onSubmit");
+    const updateRecipe$ = (recipeServiceMock.updateRecipe as jest.Mock).mockReturnValue(of(null))
+    jest.spyOn(component, "onUpdateRecipe");
+
+    component.onSubmit();
+
+    expect(component.recipeDetailsForm.value).toMatchObject(mockedRecipeDetailsForm);
+    expect(component.recipeDetailsForm.value.id).toBe(1);
+    expect(updateRecipe$).toHaveBeenCalled();
+
+
+  });
+
+  it('should call onAddRecipe when pageFunction is default Add', () => {
+    component.ingredientsForm = fb.group({
+      ingredients: fb.array([
+        fb.control('Ingredient 1'),
+        fb.control('Ingredient 2'),
+        fb.control('Ingredient 3'),
+      ])
+    });
+
+    component.instructionsForm = fb.group({
+      instructions: fb.array([
+        fb.control('Ingredient 1'),
+        fb.control('Ingredient 2'),
+        fb.control('Ingredient 3'),
+      ])
+    });
+
+    component.tipsForm = fb.group({
+      tips: fb.array([
+        fb.control('Ingredient 1'),
+        fb.control('Ingredient 2'),
+        fb.control('Ingredient 3'),
+      ])
+    });
+
+    component.recipeDetailsForm = fb.group({
+      title: "Test 19",
+      description: "Test 19Test 19Test 19Test 19Test 19Test 19Test 19",
+      yield: 12,
+      prepTime: 12,
+      cookTime: 12,
+      place: "Italian",
+      time: "Brunch",
+    });
+
+    component.username = "Johndoe"
+
+    const mockedRecipeDetailsForm = {
+      "owner": "Johndoe",
+      "title": "Test 19",
+      "description": "Test 19Test 19Test 19Test 19Test 19Test 19Test 19",
+      "yield": 12,
+      "prepTime": 12,
+      "cookTime": 12,
+      "place": "Italian",
+      "time": "Brunch",
+      "totalTime": 24,
+      "ingredients": [
+        'Ingredient 1',
+        'Ingredient 2',
+        'Ingredient 3'
+      ],
+      "tips": [
+        'Ingredient 1',
+        'Ingredient 2',
+        'Ingredient 3'
+      ],
+      "instructions": [
+        'Ingredient 1',
+        'Ingredient 2',
+        'Ingredient 3'
+      ]
+    }
+
+
+    jest.spyOn(component, "onSubmit");
+    const postNewRecipe$ = (recipeServiceMock.postNewRecipe as jest.Mock).mockReturnValue(of(null))
+
+    component.onSubmit();
+
+    expect(component.recipeDetailsForm.value).toMatchObject(mockedRecipeDetailsForm);
+    expect(postNewRecipe$).toHaveBeenCalled();
+  });
 
 
 
 });
-
-
