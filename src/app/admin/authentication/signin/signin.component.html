@@ -22,7 +22,7 @@
                     <p>PASSWORD</p>
                 </div>
                 <mat-form-field appearance="outline" class="width">
-                    <input placeholder="Input password" matInput formControlName="password" />
+                    <input type="password" placeholder="Input password" matInput formControlName="password" />
                     <mat-error *ngIf="signInForm.get('password')?.hasError('required')">The
                         Password is required</mat-error>
                 </mat-form-field>

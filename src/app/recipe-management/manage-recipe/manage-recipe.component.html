@@ -19,6 +19,7 @@
                                 <div>
                                     <form [formGroup]="recipeDetailsForm">
                                         <div>
+                                            <p><strong>General Details</strong></p>
                                             <div>
                                                 <ng-container>
                                                     <mat-form-field class="width" appearance="outline">
@@ -41,71 +42,84 @@
                                                     </mat-form-field>
                                                 </ng-container>
                                             </div>
-                                            <div>
-                                                <ng-container>
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Yield</mat-label>
-                                                        <input matInput formControlName="yield" type="number"
-                                                            placeholder="Yield (Persons)" required>
-                                                        <mat-error
-                                                            *ngIf="recipeDetailsForm.get('yield')?.hasError('required')">The
-                                                            yeild is required </mat-error>
-                                                    </mat-form-field>
-                                                </ng-container>
-                                            </div>
-                                            <div>
-                                                <ng-container>
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Prep Time</mat-label>
-                                                        <input matInput formControlName="prepTime" type="number"
-                                                            placeholder="Prep Time (Minutes)" required>
-                                                        <mat-error
-                                                            *ngIf="recipeDetailsForm.get('prepTime')?.hasError('required')">The
-                                                            prep time is required </mat-error>
-                                                    </mat-form-field>
-                                                </ng-container>
-                                            </div>
-                                            <div>
-                                                <ng-container>
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Cook Time</mat-label>
-                                                        <input matInput formControlName="cookTime" type="number"
-                                                            placeholder="Cook Time (Minutes)" required>
-                                                        <mat-error
-                                                            *ngIf="recipeDetailsForm.get('cookTime')?.hasError('required')">The
-                                                            cook time is required </mat-error>
-                                                    </mat-form-field>
-                                                </ng-container>
-                                            </div>
-                                            <div>
-                                                <ng-container>
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Cuisine</mat-label>
-                                                        <mat-select formControlName="place" placeholder="Cuisine">
-                                                            <mat-option *ngFor="let option of placeOptions"
-                                                                [value]="option.label">{{ option.label }}</mat-option>
-                                                        </mat-select>
-                                                        <mat-error
-                                                            *ngIf="recipeDetailsForm.get('place')?.hasError('required')">The
-                                                            place is required</mat-error>
-                                                    </mat-form-field>
-                                                </ng-container>
+
+                                            <!-- Rowed Items -->
+                                            <p><strong>Prep & Cook Time</strong></p>
+                                            <div class="combinedButtons">
+                                                <div class="outerWidth">
+                                                    <ng-container>
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Prep Time</mat-label>
+                                                            <input matInput formControlName="prepTime" type="number"
+                                                                placeholder="Prep Time (Minutes)" required>
+                                                            <mat-error
+                                                                *ngIf="recipeDetailsForm.get('prepTime')?.hasError('required')">The
+                                                                prep time is required </mat-error>
+                                                        </mat-form-field>
+                                                    </ng-container>
+                                                </div>
+                                                <div class="outerWidth">
+                                                    <ng-container>
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Cook Time</mat-label>
+                                                            <input matInput formControlName="cookTime" type="number"
+                                                                placeholder="Cook Time (Minutes)" required>
+                                                            <mat-error
+                                                                *ngIf="recipeDetailsForm.get('cookTime')?.hasError('required')">The
+                                                                cook time is required </mat-error>
+                                                        </mat-form-field>
+                                                    </ng-container>
+                                                </div>
+                                            
+                                                <div class="outerWidth">
+                                                    <ng-container>
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Yield</mat-label>
+                                                            <input matInput formControlName="yield" type="number" placeholder="Yield (Persons)" required>
+                                                            <mat-error *ngIf="recipeDetailsForm.get('yield')?.hasError('required')">The
+                                                                yeild is required </mat-error>
+                                                        </mat-form-field>
+                                                    </ng-container>
+                                                </div>
+                                            
                                             </div>
 
-                                            <div>
-                                                <ng-container>
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Time of Meal</mat-label>
-                                                        <mat-select formControlName="time" placeholder="Time">
-                                                            <mat-option *ngFor="let option of timeOptions"
-                                                                [value]="option.label">{{ option.label }}</mat-option>
-                                                        </mat-select>
-                                                        <mat-error
-                                                            *ngIf="recipeDetailsForm.get('time')?.hasError('required')">The
-                                                            meal time is required</mat-error>
-                                                    </mat-form-field>
-                                                </ng-container>
+                                            <p><strong>Cuisine Details</strong></p>
+                                            <div class="combinedButtons">
+                                                <div class="innerWidth">
+                                                    <ng-container>
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Cuisine</mat-label>
+                                                            <mat-select formControlName="place" placeholder="Cuisine">
+                                                                <mat-option *ngFor="let option of placeOptions"
+                                                                    [value]="option.label">{{ option.label
+                                                                    }}</mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                                *ngIf="recipeDetailsForm.get('place')?.hasError('required')">The
+                                                                place is required</mat-error>
+                                                        </mat-form-field>
+                                                    </ng-container>
+                                                </div>
+
+                                                <div class="innerWidth">
+                                                    <ng-container>
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Time of Meal</mat-label>
+                                                            <mat-select formControlName="time" placeholder="Time">
+                                                                <mat-option *ngFor="let option of timeOptions"
+                                                                    [value]="option.label">{{ option.label
+                                                                    }}</mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                                *ngIf="recipeDetailsForm.get('time')?.hasError('required')">The
+                                                                meal time is required</mat-error>
+                                                        </mat-form-field>
+                                                    </ng-container>
+                                                </div>
                                             </div>
+
+
 
 
                                         </div>
@@ -216,7 +230,7 @@
                         <div class="padding">
                             <mat-step>
                                 <div class="padding">
-                                    <p>Review your recipe details and submit.</p>
+                                    <p><strong>Review your recipe details and submit.</strong></p>
                                     <button type="submit" mat-button (click)="onSubmit()">Submit</button>
                                     <button type="submit" mat-button (click)="onCancel()">Cancel</button>
                                 </div>

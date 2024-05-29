@@ -3,6 +3,7 @@ import { SigninComponent } from './admin/authentication/signin/signin.component'
 import { SignupComponent } from './admin/authentication/signup/signup.component';
 import { HomePageComponent } from './architecture/layout/home-page/home-page.component';
 import { authenticationGuard } from './admin/authentication/guards/authentication.guard';
+import { Page404Component } from './architecture/layout/page404/page404.component';
 
 export const routes: Routes = [
 
@@ -51,5 +52,9 @@ export const routes: Routes = [
         loadComponent: () => import('./recipe-management/multi-recipeviewer/multi-recipeviewer.component')
             .then((m) => m.MultiRecipeviewerComponent),
     }, 
+    {
+        path: '**',
+        component: Page404Component
+    }
      
 ];

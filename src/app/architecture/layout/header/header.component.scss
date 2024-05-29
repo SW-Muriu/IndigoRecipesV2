@@ -66,6 +66,12 @@ $display-size: 12;
     .search-container {
         display: flex;
         align-items: center;
+        outline: #333;
+
+        @media screen and (max-width: 375px) {
+            flex-direction: column;
+
+        }
 
         .search-input {
             padding: 5px;
