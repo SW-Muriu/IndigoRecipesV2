@@ -8,6 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { NotificationService } from '../../architecture/services/notification/notification.service';
 import { Router } from '@angular/router';
+import { ManageRecipeComponent } from '../manage-recipe/manage-recipe.component';
 
 @Component({
   selector: 'app-recipe-holder',
@@ -32,7 +33,7 @@ export class RecipeHolderComponent {
   constructor(
     private recipeManService: RecipeService,
     private snackbar: NotificationService,
-    private router: Router
+    private router: Router,
   ) {
 
   }
@@ -48,10 +49,13 @@ export class RecipeHolderComponent {
     this.router.navigate([route], {
       queryParams: {
         id: id
-      }
+      }, 
+      skipLocationChange: true
     })
 
   }
+  
+  
 
 
   onLike(id: number): void {

@@ -29,7 +29,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { BrowserModule } from "@angular/platform-browser";
 
 
-@NgModule({
+    @NgModule({
     declarations: [],
     imports: [
         CommonModule,

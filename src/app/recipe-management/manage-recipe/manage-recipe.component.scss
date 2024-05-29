@@ -22,4 +22,18 @@
         // width: 70%;
         align-items: center;
     }
+
+    .combinedButtons {
+        display: flex;
+        flex-direction: row;
+        // gap: 10px;
+
+        .outerWidth {
+            width: 31.10%;
+        }
+
+        .innerWidth{
+            width: 46.99%;
+        }
+    }
 }
