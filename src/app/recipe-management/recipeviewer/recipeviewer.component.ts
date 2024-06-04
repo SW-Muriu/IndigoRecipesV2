@@ -12,6 +12,8 @@ import { Location } from '@angular/common';
 
 import { NotificationService } from '../../architecture/services/notification/notification.service';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { RateRecipeComponent } from '../rate-recipe/rate-recipe.component';
 
 
 @Component({
@@ -54,7 +56,8 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
     private location: Location,
     private recipeManService: RecipeService,
     private route: ActivatedRoute,
-    private snackbarManService: NotificationService
+    private snackbarManService: NotificationService, 
+    public dialog: MatDialog, 
   ) {
     this.username = sessionStorage.getItem('username');
   }
@@ -111,7 +114,14 @@ export class RecipeviewerComponent implements OnInit, OnDestroy {
   }
 
   rateClicked(id: number): void {
-
+    this.dialog.open(RateRecipeComponent, {
+      width: '300px',
+      enterAnimationDuration: "1000",
+      exitAnimationDuration: '1000',
+      data: {
+        id: id,
+      }
+    })
   }
 
   //Edit

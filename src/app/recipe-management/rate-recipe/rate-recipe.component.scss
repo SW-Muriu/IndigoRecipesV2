@@ -1,0 +1,30 @@
+
+section{
+    
+    padding: 0.2rem;
+}
+
+button {
+    margin-right: 8px;
+}
+
+
+.star-rating {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10rem;
+    cursor: pointer;
+}
+
+.star-rating span {
+    color: #ccc;
+}
+
+.star-rating span.selected {
+    color: indigo;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+}

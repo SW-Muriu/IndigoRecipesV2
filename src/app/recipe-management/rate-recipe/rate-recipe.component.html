@@ -1,0 +1,19 @@
+<section>
+    <h2 class="content" mat-dialog-title color="primary">Rate Recipe</h2>
+    <mat-dialog-content>
+        <div class="star-rating">
+            @for(star of [1,2,3,4,5]; track star) {
+            <span (click)="selectStar(star)">
+                <mat-icon [style.color]="selectedStar >= star ? 'indigo' : '#ccc'">
+                    star_outline
+                </mat-icon>
+            </span>
+            }
+        </div>
+        <p class="content">Selected Rating: {{ selectedStar }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button mat-dialog-close cdkFocusInitial>Rate</button>
+    </mat-dialog-actions>
+</section>
