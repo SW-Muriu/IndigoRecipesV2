@@ -32,7 +32,9 @@ Welcome to the Recipe Sharing Platform, a dynamic web application built using An
   - Follow Users: Users can follow others whose recipes they enjoy.
   - Like & Comment: Users can like and comment on recipes to provide feedback or appreciation.
   - Share Recipes: Recipes can be shared on social media platforms or via email.
+
 ![image](https://github.com/user-attachments/assets/94fe2900-3668-4861-aeb2-01cba6e8934a)
+
 4. User Profiles
   - Profile Management: Users can view and update personal information such as name, bio, profile picture, and view their created recipes.
 5. Search and Filtering
